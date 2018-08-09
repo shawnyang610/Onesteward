@@ -13,7 +13,7 @@ class AddressModel(db.Model):
     zip = db.Column (db.String(10))
 
     company_id = db.Column(db.Integer, db.ForeignKey("companies.id"))
-    company = db.relationship("CompanyModel")
+    # company = db.relationship("CompanyModel")
 
 
     def __init__(self, line1, line2, city, state, zip, company_id):

@@ -1,4 +1,1 @@
 # service types
-service types = {
-    
-}

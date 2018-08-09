@@ -8,12 +8,12 @@ class TrackingModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     message = db.Column(db.String(200))
 
-    order_id = db.Column(db.Integer. db.ForeignKey("orders.id"))
+    order_id = db.Column(db.Integer, db.ForeignKey("orders.id"))
     # staff who summited the tracking log
     staff_id = db.Column(db.Integer, db.ForeignKey("staffs.id"))
     # user comments, coresponds to an existing staff tracking log
     user_id = db.Column (db.Integer)
-    is_deleted = db.Column(db.Integer(1))
+    is_deleted = db.Column(db.Integer)
 
     def __init__(self, message, order_id, staff_id, user_id):
         self.message = message

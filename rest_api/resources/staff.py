@@ -8,7 +8,7 @@ from flask_jwt_extended import (
     get_raw_jwt,
     jwt_required
 )
-from blacklist import BLACKLIST
+# from blacklist import BLACKLIST
 
 
 class Staff(Resource):
@@ -22,9 +22,6 @@ class Staff(Resource):
     def post(self):
         pass
 
-    @jwt_required
-    def post(self):
-        pass
 
     @jwt_required
     def put(self):

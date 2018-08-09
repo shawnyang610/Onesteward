@@ -7,7 +7,7 @@ class StaffModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
     company_id = db.Column(db.Integer, db.ForeignKey("companies.id"))
-    is_deleted = db.Column(db.Integer(1))
+    is_deleted = db.Column(db.Integer)
 
     def __init__(self, name, company_id):
         self.name =name

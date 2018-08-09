@@ -5,6 +5,7 @@ from flask_jwt_extended import JWTManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
+
 ###########################
 #### config flask app ####
 ###########################
@@ -36,4 +37,20 @@ jwt = JWTManager(app)
 ###########################
 #### config api  ######
 ###########################
+from rest_api.resources.user import (
+    UserRegister, UserAccountInfo, UserCloseAccount, UserUpdateInfo
+    )# noqa
+from rest_api.resources.company import (
+    CompanyRegister, CompanyUpdateInfo, CompanyCloseAccount, CompanyAccountInfo
+) # noqa
 api = Api(app)
+
+api.add_resource(UserRegister, "/user/register")
+api.add_resource(UserAccountInfo, "/user/info")
+api.add_resource(UserCloseAccount, "/user/close_account")
+api.add_resource(UserUpdateInfo, "/user/update")
+
+api.add_resource(CompanyRegister, "/company/register")
+api.add_resource(CompanyAccountInfo, "/company/info")
+api.add_resource(CompanyUpdateInfo, "/company/update")
+api.add_resource(CompanyCloseAccount, "/company/close_account")

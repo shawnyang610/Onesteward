@@ -1,4 +1,9 @@
 from rest_api import db
+from rest_api.models.tracking import TrackingModel
+from rest_api.models.staff import StaffModel
+from rest_api.models.company import CompanyModel
+
+
 
 
 class OrderModel(db.Model):
@@ -10,8 +15,8 @@ class OrderModel(db.Model):
     name = db.Column(db.String(80))
     staff_id = db.Column(db.Integer, db.ForeignKey("staffs.id"))
     # filled in when user registers new account and add this order in account
-    user_id = db.Column(db.Interger, db.ForeignKey("users.id"))
-    is_deleted = db.Column(db.Interger)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    is_deleted = db.Column(db.Integer)
 
     tracking_logs = db.relationship("TrackingModel")
 

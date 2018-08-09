@@ -1,4 +1,5 @@
 from rest_api import db
+from rest_api.models.address import AddressModel # noqa
 
 
 class CompanyModel(db.Model):
@@ -9,12 +10,14 @@ class CompanyModel(db.Model):
     name = db.Column(db.String(80))
     email = db.Column(db.String(80))
     phone = db.Column(db.String(20))
+    password_hash = db.Column (db.String(256))
     is_deleted =db.Column(db.Integer)
 
     addresses = db.relationship ("AddressModel", lazy="dynamic")
 
-    def __init__(self, name, email, phone):
+    def __init__(self, name, password_hash, email, phone):
         self.name = name
+        self.password_hash = password_hash
         self.email = email
         self.phone = phone
         self.is_deleted=0
@@ -25,12 +28,13 @@ class CompanyModel(db.Model):
             "name":self.name,
             "email":self.email,
             "phone":self.phone,
-            "addresses": [address.jason() for address in self.addresses.all()]
+            "is_deleted": self.is_deleted,
+            "addresses": [address.json() for address in self.addresses.all()]
         }
 
     @classmethod
     def find_by_name(cls,name):
-        return cls.query.filter_by(name=name).first()
+        return cls.query.filter_by(name=name, is_deleted=0).first()
 
     @classmethod
     def find_all(cls):

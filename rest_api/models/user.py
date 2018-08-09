@@ -1,20 +1,21 @@
 from rest_api import db
-
+from rest_api.models.order import OrderModel # noqa
 
 class UserModel(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
-    hashed_password = db.Column(db.String(256))
+    password_hash = db.Column(db.String(256))
     name = db.Column(db.String(50))
     email = db.Column(db.String(50))
     phone = db.Column(db.String(20))
 
     orders = db.relationship("OrderModel", lazy="dynamic")
-    is_deleted = db.Column(db.Integer(1))
+
+    is_deleted = db.Column(db.Integer)
 
     def __init__(self, hashed_password, name, email):
-        self.hashed_password=hashed_password
+        self.password_hash=hashed_password
         self.name = name
         self. email = email
         self. phone = None
@@ -36,7 +37,7 @@ class UserModel(db.Model):
 
     @classmethod
     def find_by_name(cls, name):
-        return cls.query.filter_by(name=name).first()
+        return cls.query.filter_by(name=name, is_deleted=0).first()
 
     @classmethod
     def find_by_email(cls, email):
