@@ -51,8 +51,10 @@ class UserCloseAccount(Resource):
 
 
 class UserUpdateInfo(Resource):
-
-    pass
+    
+    def put(self):
+        pass
+        
 
 class UserRegister(Resource):
 

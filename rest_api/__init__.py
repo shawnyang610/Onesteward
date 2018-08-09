@@ -37,20 +37,28 @@ jwt = JWTManager(app)
 ###########################
 #### config api  ######
 ###########################
+api = Api(app)
+
 from rest_api.resources.user import (
     UserRegister, UserAccountInfo, UserCloseAccount, UserUpdateInfo
     )# noqa
-from rest_api.resources.company import (
-    CompanyRegister, CompanyUpdateInfo, CompanyCloseAccount, CompanyAccountInfo
-) # noqa
-api = Api(app)
-
 api.add_resource(UserRegister, "/user/register")
 api.add_resource(UserAccountInfo, "/user/info")
 api.add_resource(UserCloseAccount, "/user/close_account")
 api.add_resource(UserUpdateInfo, "/user/update")
 
+from rest_api.resources.company import (
+    CompanyRegister, CompanyUpdateInfo, CompanyCloseAccount, CompanyAccountInfo
+) # noqa
 api.add_resource(CompanyRegister, "/company/register")
 api.add_resource(CompanyAccountInfo, "/company/info")
 api.add_resource(CompanyUpdateInfo, "/company/update")
 api.add_resource(CompanyCloseAccount, "/company/close_account")
+
+from rest_api.resources.staff import (
+    StaffRegister, StaffAccountInfo, StaffUpdateInfo, StaffCloseAccount
+) # noqa
+api.add_resource(StaffRegister, "/staff/register")
+api.add_resource(StaffAccountInfo, "/staff/info")
+api.add_resource(StaffUpdateInfo, "/staff/update")
+api.add_resource(StaffCloseAccount, "/staff/close_account")

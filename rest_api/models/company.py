@@ -32,6 +32,7 @@ class CompanyModel(db.Model):
             "addresses": [address.json() for address in self.addresses.all()]
         }
 
+
     @classmethod
     def find_by_name(cls,name):
         return cls.query.filter_by(name=name, is_deleted=0).first()
