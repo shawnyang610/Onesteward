@@ -1,7 +1,7 @@
 from rest_api import db
-from rest_api.models.tracking import TrackingModel
-from rest_api.models.staff import StaffModel
-from rest_api.models.company import CompanyModel
+from rest_api.models.tracking import TrackingModel # noqa
+# from rest_api.models.staff import StaffModel
+# from rest_api.models.company import CompanyModel
 
 
 
@@ -18,7 +18,7 @@ class OrderModel(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     is_deleted = db.Column(db.Integer)
 
-    tracking_logs = db.relationship("TrackingModel")
+    tracking_logs = db.relationship("TrackingModel", lazy="dynamic")
 
     def __init__(self, ur_code, name, staff_id):
         self.ur_code = ur_code
@@ -41,7 +41,7 @@ class OrderModel(db.Model):
 
     @classmethod
     def find_by_ur_code(cls,ur_code):
-        return cls.query.filter_by(ur_code=ur_code).first()
+        return cls.query.filter_by(ur_code=ur_code, is_deleted=0).first()
 
     @classmethod
     def find_all(cls):

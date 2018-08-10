@@ -1,5 +1,5 @@
 from rest_api import db
-
+from rest_api.models.company import CompanyModel # noqa
 
 class StaffModel(db.Model):
     __tablename__ = "staffs"

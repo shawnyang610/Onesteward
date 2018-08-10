@@ -8,7 +8,7 @@ from flask_restful import Resource, reqparse
 #     get_raw_jwt,
 #     jwt_required
 # )
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 # from blacklist import BLACKLIST
 from rest_api.models.user import UserModel
 
@@ -51,10 +51,29 @@ class UserCloseAccount(Resource):
 
 
 class UserUpdateInfo(Resource):
-    
+
+    user_parser = reqparse.RequestParser()
+    user_parser.add_argument(
+        "username", type=str, required=True, help="username cannot be blank"
+    )
+    user_parser.add_argument(
+        "password", type=str, required=True, help="password cannot be blank"
+    )
+    user_parser.add_argument(
+        "email", type=str, required=True, help="email cannot be blank"
+    )
+
     def put(self):
-        pass
-        
+        data = self.user_parser.parse_args()
+        user = UserModel.find_by_name(data["username"])
+        if not user:
+            return {"message":"user:{} not found".format(data["username"])},404
+        user.email = data["email"]
+        user.save_to_db()
+        return {
+            "message":"user info updated succesfully."
+        },200
+
 
 class UserRegister(Resource):
 

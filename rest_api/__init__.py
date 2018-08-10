@@ -62,3 +62,11 @@ api.add_resource(StaffRegister, "/staff/register")
 api.add_resource(StaffAccountInfo, "/staff/info")
 api.add_resource(StaffUpdateInfo, "/staff/update")
 api.add_resource(StaffCloseAccount, "/staff/close_account")
+
+from rest_api.resources.order import (
+    OrderCreate, OrderInfo, OrderUpdate, OrderDelete
+) # noqa
+api.add_resource(OrderCreate, "/order/new_order")
+api.add_resource(OrderInfo, "/order/info")
+api.add_resource(OrderUpdate, "/order/update")
+api.add_resource(OrderDelete, "/order/delete")
