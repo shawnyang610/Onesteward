@@ -8,8 +8,8 @@
  - online order status updates 
  - online inqueries, resolution center
  - redundant data protection
- - standardized process for each type of service
- - shared business resources among alliance members 
+ - standardized yet customizable process for each type of service
+ - shared business resources among affiliated companies
  
 ## Phase 1
  - Build:

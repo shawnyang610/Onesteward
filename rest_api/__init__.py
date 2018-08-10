@@ -70,3 +70,11 @@ api.add_resource(OrderCreate, "/order/new_order")
 api.add_resource(OrderInfo, "/order/info")
 api.add_resource(OrderUpdate, "/order/update")
 api.add_resource(OrderDelete, "/order/delete")
+
+from rest_api.resources.tracking import (
+    TrackingCreate, TrackingInfo, TrackingUpdate, TrackingDelete
+) # noqa
+api.add_resource(TrackingCreate, "/tracking/new_post")
+api.add_resource(TrackingInfo, "/tracking/info")
+api.add_resource(TrackingUpdate, "/tracking/update")
+api.add_resource(TrackingDelete, "/tracking/delete")

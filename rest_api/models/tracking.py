@@ -8,10 +8,13 @@ class TrackingModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     message = db.Column(db.String(200))
 
+    # need inverse relation so order retrieves all its tracking logs
     order_id = db.Column(db.Integer, db.ForeignKey("orders.id"))
     # staff who summited the tracking log
+    # no need for inverse relation
     staff_id = db.Column(db.Integer, db.ForeignKey("staffs.id"))
     # user comments, coresponds to an existing staff tracking log
+    # no need for inverse relation
     user_id = db.Column (db.Integer)
     is_deleted = db.Column(db.Integer)
 
@@ -19,7 +22,7 @@ class TrackingModel(db.Model):
         self.message = message
         self.order_id =order_id
         self.staff_id = staff_id
-        self.user_id=0
+        self.user_id= user_id
         self.is_deleted=0
 
     def json(self):
@@ -34,7 +37,7 @@ class TrackingModel(db.Model):
 
     @classmethod
     def find_by_id(cls, id):
-        return cls.query.filter_by(id=id).first()
+        return cls.query.filter_by(id=id, is_deleted=0).first()
 
     @classmethod
     def find_by_order_id(cls, order_id):
