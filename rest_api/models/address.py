@@ -14,15 +14,17 @@ class AddressModel(db.Model):
 
     company_id = db.Column(db.Integer, db.ForeignKey("companies.id"))
     # company = db.relationship("CompanyModel")
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
 
-    def __init__(self, line1, line2, city, state, zip, company_id):
+    def __init__(self, line1, line2, city, state, zip, company_id, user_id):
         self.line1 = line1
         self.line2 = line2
         self.city = city
         self.state = state
         self.zip = zip
         self.company_id=company_id
+        self.user_id = user_id
         self.is_deleted = 0
 
     def json(self):
@@ -34,12 +36,13 @@ class AddressModel(db.Model):
             "state": self.state,
             "zip": self.zip,
             "company_id":self.company_id,
+            "user_id":self.user_id,
             "is_deleted":self.is_deleted
         }
 
     @classmethod
     def find_by_id(cls,id):
-        return cls.query.filter_by(id = id).first()
+        return cls.query.filter_by(id = id, is_deleted=0).first()
 
     @classmethod
     def find_all(cls):

@@ -73,7 +73,8 @@ class CompanyRegister(Resource):
             city=data["city"],
             state=data["state"],
             zip=data["zip"],
-            company_id=company.id
+            company_id=company.id,
+            user_id=1 # 1=not applicable
         )
         address.save_to_db()
 

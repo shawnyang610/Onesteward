@@ -78,3 +78,11 @@ api.add_resource(TrackingCreate, "/tracking/new_post")
 api.add_resource(TrackingInfo, "/tracking/info")
 api.add_resource(TrackingUpdate, "/tracking/update")
 api.add_resource(TrackingDelete, "/tracking/delete")
+
+from rest_api.resources.address import (
+    AddressCreate, AddressInfo, AddressUpdate, AddressDelete
+) # noqa
+api.add_resource (AddressCreate, "/address/new_address")
+api.add_resource (AddressInfo, "/address/info")
+api.add_resource (AddressUpdate, "/address/update")
+api.add_resource (AddressDelete, "/address/delete")
