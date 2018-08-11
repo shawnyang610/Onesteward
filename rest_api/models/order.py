@@ -35,7 +35,7 @@ class OrderModel(db.Model):
             "name":self.name,
             "staff_id":self.staff_id,
             "user_id":self.user_id,
-            "tracking_logs": [log.jason() for log in self.tracking_logs.all()],
+            "tracking_logs": [log.json() for log in self.tracking_logs.all()],
             "is_deleted":self.is_deleted
         }
 
