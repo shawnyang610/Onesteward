@@ -1,5 +1,6 @@
 from flask_restful import Resource, reqparse
 from rest_api.models.address import AddressModel
+from flask_jwt_extended import jwt_required
 
 ##############################
 #### Create address ##########
@@ -28,6 +29,7 @@ class AddressCreate(Resource):
         "user_id", type=int,required=False
     )
 
+    @jwt_required
     def post(self):
         data = self.adr_parser.parse_args()
 
@@ -54,6 +56,7 @@ class AddressInfo(Resource):
         "address_id", type=int, required=True, help="address_id cannot be blank."
     )
 
+    @jwt_required
     def post(self):
         data = self.adr_parser.parse_args()
 
@@ -89,6 +92,7 @@ class AddressUpdate(Resource):
         "zip", type = str, required=True, help="zip cannot be blank."
     )
 
+    @jwt_required
     def put(self):
         data = self.adr_parser.parse_args()
         
@@ -114,6 +118,7 @@ class AddressDelete(Resource):
         "address_id", type=int, required=True, help="address_id cannot be blank."
     )
 
+    @jwt_required
     def delete(self):
         data = self.adr_parser.parse_args()
 

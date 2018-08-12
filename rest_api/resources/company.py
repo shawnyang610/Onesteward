@@ -2,16 +2,10 @@ from flask_restful import Resource, reqparse
 from werkzeug.security import generate_password_hash, check_password_hash
 from rest_api.models.company import CompanyModel
 from rest_api.models.address import AddressModel
-# from werkzeug.security import safe_str_cmp
-# from flask_jwt_extended import (
-#     create_access_token,
-#     create_refresh_token,
-#     jwt_refresh_token_required,
-#     get_jwt_identity,
-#     get_raw_jwt,
-#     jwt_required
-# )
-# from blacklist import BLACKLIST
+from flask_jwt_extended import (
+    jwt_required
+)
+
 
 #######################################
 #### register new affiliated company ##
@@ -47,7 +41,7 @@ class CompanyRegister(Resource):
         "zip", type=str, required=True, help="zipcode cannot be blank."
     )
     # register a new affiliated partner company
-    # @jwt_required
+    @jwt_required
     def post(self):
         data = self.company_parser.parse_args()
         company = CompanyModel.find_by_name(data["company_name"])
@@ -97,6 +91,7 @@ class CompanyCloseAccount(Resource):
         "password", type=str, required=True, help="password cannot be blank."
     )
 
+    @jwt_required
     def delete(self):
         data = self.company_parser.parse_args()
         company = CompanyModel.find_by_name(data["company_name"])
@@ -134,7 +129,7 @@ class CompanyUpdateInfo(Resource):
         "phone", type=str, required=True, help="phone cannot be blank."
     )
 
-    # @jwt_required
+    @jwt_required
     def put(self):
         data = self.company_parser.parse_args()
         company = CompanyModel.find_by_name(data["company_name"])
@@ -166,7 +161,7 @@ class CompanyAccountInfo(Resource):
     company_parser.add_argument(
         "password", type=str, required=True, help="password cannot be blank."
     )
-    # @jwt_required
+    @jwt_required
     def post(self):
         data = self.company_parser.parse_args()
         company = CompanyModel.find_by_name(data["company_name"])

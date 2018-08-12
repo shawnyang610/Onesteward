@@ -40,6 +40,11 @@ def is_blacklisted(decrypted_token):
     jti = decrypted_token["jti"]
     return RevokedTokenModel.is_jti_blacklisted(jti)
 
+# TODO
+@jwt.user_claims_loader
+def add_claims_to_access_token(identity):
+    pass
+
 ###########################
 #### config api  ######
 ###########################

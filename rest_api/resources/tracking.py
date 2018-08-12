@@ -1,6 +1,6 @@
 from flask_restful import Resource, reqparse
 from rest_api.models.tracking import TrackingModel
-
+from flask_jwt_extended import jwt_required
 
 ##############################################
 #### Create tracking log ####################
@@ -21,6 +21,7 @@ class TrackingCreate(Resource):
         "message", type=str, required=False, help="order_id cannot be blank."
     )
 
+    @jwt_required
     def post(self):
         data = self.tracking_parser.parse_args()
 
@@ -49,6 +50,7 @@ class TrackingInfo(Resource):
         "trk_log_id", type=int, required=True, help="trk_log_id cannot be blank."
     )
 
+    @jwt_required
     def post(self):
         data = self.tracking_parser.parse_args()
         trk_log = TrackingModel.find_by_id(data['trk_log_id'])
@@ -81,6 +83,8 @@ class TrackingUpdate(Resource):
     tracking_parser.add_argument(
         "message", type=str, required=False, help="order_id cannot be blank."
     )
+
+    @jwt_required
     def put(self):
         data = self.tracking_parser.parse_args()
         trk_log = TrackingModel.find_by_id(data['trk_log_id'])
@@ -107,6 +111,8 @@ class TrackingDelete(Resource):
     tracking_parser.add_argument(
         "trk_log_id", type=int, required=True, help="trk_log_id cannot be blank."
     )
+
+    @jwt_required
     def delete(self):
         data = self.tracking_parser.parse_args()
         trk_log = TrackingModel.find_by_id(data['trk_log_id'])

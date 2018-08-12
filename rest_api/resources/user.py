@@ -4,7 +4,8 @@ from flask_jwt_extended import (
     create_refresh_token,
     jwt_required,
     jwt_refresh_token_required,
-    get_raw_jwt
+    get_raw_jwt,
+    get_jwt_identity
 )
 from werkzeug.security import generate_password_hash, check_password_hash
 # from blacklist import BLACKLIST
@@ -25,9 +26,21 @@ class UserAccountInfo(Resource):
     def post(self):
         data = self.user_parser.parse_args()
         user = UserModel.find_by_name(data["username"])
-        if user:
-            return user.json(),200
-        return {"message":"user:{} not found".format(data["username"])},404
+
+        if not user:
+            return {"message":"user:{} not found".format(data["username"])},404
+
+        # auth group: user account owner, admin
+        identity = get_jwt_identity()
+
+        if identity["auth_level"] == "user" and identity["id"] != user.id:
+            return {"message":"unauthorized access, user is only allowed to view his/her own account info"}, 500
+
+        if identity["auth_level"] == "staff":
+            return {"message":"unauthorized access for staff."},500
+
+
+        return user.json(),200
 
 
 
@@ -42,10 +55,24 @@ class UserCloseAccount(Resource):
     def delete(self):
         data = self.user_parser.parse_args()
         user = UserModel.find_by_name(data["username"])
+
         if not user:
             return {"message":"user:{} not found".format(data["username"])},404
-        user.delete_from_db()
-        return {"message":"user:{} deleted".format(data["username"])},200
+
+        # auth group: user account owner, admin
+        # all staffs and user with wrong id are unauthorized
+        identity = get_jwt_identity()
+        if identity["auth_level"] == "staff" or (
+            identity["auth_level"] == "user" and identity["id"] != user.id):
+            return {"message":"unauthorized access"},500 
+
+        # authorized: admin, user account owner
+
+        try:
+            user.delete_from_db()
+            return {"message":"user:{} deleted".format(data["username"])},200
+        except:
+            return {"message":"something went wrong"}
 
 
 class UserUpdateInfo(Resource):
@@ -65,13 +92,26 @@ class UserUpdateInfo(Resource):
     def put(self):
         data = self.user_parser.parse_args()
         user = UserModel.find_by_name(data["username"])
+
         if not user:
             return {"message":"user:{} not found".format(data["username"])},404
+
+        # auth group: user account owner, admin
+        # all staffs are user with wrong id are unauthorized
+        identity = get_jwt_identity()
+        if identity["auth_level"] == "staff" or (
+            identity["auth_level"] == "user" and identity["id"] != user.id):
+            return {"message":"unauthorized access"},500 
+
+        # authorized: admin, user account owner
+
         user.email = data["email"]
-        user.save_to_db()
-        return {
-            "message":"user info updated succesfully."
-        },200
+
+        try:
+            user.save_to_db()
+            return {"message":"user info updated succesfully."},200
+        except:
+            return {"message":"something went wrong."}
 
 
 class UserRegister(Resource):
@@ -98,8 +138,12 @@ class UserRegister(Resource):
         user = UserModel(generate_password_hash(data["password"]), data["username"],data["email"])
         try:
             user.save_to_db()
-            access_token = create_access_token(identity=data["username"])
-            refresh_token= create_refresh_token(identity=data["username"])
+            identity = {
+                "auth_level":"user",
+                "id":user.id
+            }
+            access_token = create_access_token(identity=identity)
+            refresh_token= create_refresh_token(identity=identity)
             return {
                 "message":"User created successfully.",
                 "access_token":access_token,
@@ -126,8 +170,12 @@ class UserLogin(Resource):
             return {"message":"username does not exist."},404
         
         if check_password_hash(user.password_hash, data["password"]):
-            access_token = create_access_token(identity=data["username"])
-            refresh_token = create_refresh_token(identity=data["username"])
+            identity = {
+                "auth_level":"user",
+                "id":user.id
+            }
+            access_token = create_access_token(identity=identity, fresh=True)
+            refresh_token = create_refresh_token(identity=identity)
             return {
                 "message":"Logged in as {}".format(user.name),
                 "access_token": access_token,

@@ -22,7 +22,7 @@ class StaffRegister(Resource):
     staff_parser.add_argument(
         "company_id", type=int, required=True, help="company_id cannot be blank"
     )
-    # @jwt_required
+    
     def post(self):
         data = self.staff_parser.parse_args()
         staff = StaffModel.find_by_name(data["username"])
@@ -51,7 +51,7 @@ class StaffAccountInfo(Resource):
     staff_parser.add_argument(
         "password", type=str, required=True, help="password cannot be blank"
     )
-    # @jwt_required
+    @jwt_required
     def post(self):
         data = self.staff_parser.parse_args()
         staff = StaffModel.find_by_name(data["username"])
@@ -77,7 +77,7 @@ class StaffUpdateInfo(Resource):
         "company_id", type=int, required=True, help="company_id cannot be blank"
     )
 
-    # @jwt_required
+    @jwt_required
     def put(self):
         data = self.staff_parser.parse_args()
 
@@ -88,7 +88,10 @@ class StaffUpdateInfo(Resource):
             },404
         
         staff.company_id = data["company_id"]
-        staff.save_to_db()
+        try:
+            staff.save_to_db()
+        except:
+            {"message":"something went wrong."},500
         return {
             "message":"staff info updated succesfully."
         },200
@@ -103,6 +106,7 @@ class StaffCloseAccount(Resource):
         "password", type=str, required=True, help="password cannot be blank"
     )
 
+    @jwt_required
     def delete(self):
         data = self.staff_parser.parse_args()
 
@@ -134,8 +138,13 @@ class StaffLogin(Resource):
             return {"message":"username does not exist."},404
         
         if check_password_hash(staff.password_hash, data["password"]):
-            access_token = create_access_token(identity=data["username"])
-            refresh_token = create_refresh_token(identity=data["username"])
+            identity = {
+                "auth_level":"staff",
+                "company":staff.company_id,
+                "id":staff.id
+            }
+            access_token = create_access_token(identity=identity, fresh=True)
+            refresh_token = create_refresh_token(identity=identity)
             return {
                 "message":"Logged in as {}".format(staff.name),
                 "access_token": access_token,
@@ -146,6 +155,7 @@ class StaffLogin(Resource):
 
 
 class StaffLogoutAccess(Resource):
+
     @jwt_required
     def post(self):
         jti = get_raw_jwt()["jti"]
@@ -158,6 +168,7 @@ class StaffLogoutAccess(Resource):
 
 
 class StaffLogoutRefresh(Resource):
+    
     @jwt_refresh_token_required
     def post(self):
         jti = get_raw_jwt()["jti"]
