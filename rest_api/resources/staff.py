@@ -138,8 +138,9 @@ class StaffLogin(Resource):
             return {"message":"username does not exist."},404
         
         if check_password_hash(staff.password_hash, data["password"]):
+            role = "admin" if staff.id ==1 else "staff"
             identity = {
-                "auth_level":"staff",
+                "auth_level":role,
                 "company":staff.company_id,
                 "id":staff.id
             }

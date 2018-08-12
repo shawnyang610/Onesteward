@@ -3,8 +3,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from rest_api.models.company import CompanyModel
 from rest_api.models.address import AddressModel
 from flask_jwt_extended import (
-    jwt_required
+    jwt_required,
+    get_jwt_identity
 )
+from rest_api.models.staff import StaffModel
 
 
 #######################################
@@ -45,6 +47,12 @@ class CompanyRegister(Resource):
     def post(self):
         data = self.company_parser.parse_args()
         company = CompanyModel.find_by_name(data["company_name"])
+
+        # auth group: admin only
+        identity = get_jwt_identity()
+        if not identity["auth_level"] == "admin":
+            return {"message": "unauthorized access."},500
+
         if company:
             return {
                 "message":"company with this name already exits."
@@ -93,6 +101,12 @@ class CompanyCloseAccount(Resource):
 
     @jwt_required
     def delete(self):
+
+        # auth group: admin only
+        identity = get_jwt_identity()
+        if not identity["auth_level"] == "admin":
+            return {"message": "unauthorized access."},500
+
         data = self.company_parser.parse_args()
         company = CompanyModel.find_by_name(data["company_name"])
         if not company:
@@ -137,10 +151,17 @@ class CompanyUpdateInfo(Resource):
             return {
                 "message":"company name: {} not found".format(data["company_name"])
             },404
-        if not check_password_hash(company.password_hash, data["password"]):
-            return {
-                "message": "incorrect password."
-            },401
+
+        # auth group: admin and staff of the company
+
+        identity = get_jwt_identity()
+
+        if identity["auth_level"] == "user":
+            return {"message":"unauthorized access."},500
+
+        if identity["auth_level"] == "staff" and identity["company_id"] != company.id:
+                return {"message":"unauthorized access."},500
+
 
         company.email = data["email"]
         company.phone = data["phone"]
@@ -169,10 +190,18 @@ class CompanyAccountInfo(Resource):
             return {
                 "message":"company name: {} not found".format(data["company_name"])
             },404
-        if not check_password_hash(company.password_hash, data["password"]):
-            return{
-                "message":"incorrect password."
-            },401
-        
+ 
+        # auth group: admin and staff of the company
+
+        identity = get_jwt_identity()
+
+        if identity["auth_level"] == "user":
+            return {"message":"unauthorized access."},500
+
+        if identity["auth_level"] == "staff":
+            staff = StaffModel.find_by_id(identity["id"])
+            if not staff.company_id == company.id:
+                return {"message":"unauthorized access."},500
+
         return company.json(),200
 

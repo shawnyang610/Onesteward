@@ -33,7 +33,9 @@ class StaffModel(db.Model):
              }
         return ret_msg,200
 
-
+    @classmethod
+    def find_by_id(cls, id):
+        return cls.query.filter_by(id=id, is_deleted=0).first()
 
     @classmethod
     def find_by_name(cls, name):
