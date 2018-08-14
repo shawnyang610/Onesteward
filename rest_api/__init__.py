@@ -4,6 +4,7 @@ from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_login import LoginManager
 
 ###########################
 #### config flask app ####
@@ -118,3 +119,47 @@ api.add_resource (AddressCreate, "/address/new_address")
 api.add_resource (AddressInfo, "/address/info")
 api.add_resource (AddressUpdate, "/address/update")
 api.add_resource (AddressDelete, "/address/delete")
+
+######################################################
+#### web #############################################
+######################################################
+
+
+########################################
+#### login ############################
+#######################################
+
+login_manager = LoginManager()
+
+login_manager.init_app(app)
+
+login_manager.login_view = "users.login"
+
+
+########################################
+#### blueprint #########################
+########################################
+
+from rest_api.views.home import home_bp # noqa
+app.register_blueprint(home_bp)
+
+from rest_api.views.user import user_bp # noqa
+app.register_blueprint(user_bp, url_prefix="/web/user")
+
+from rest_api.views.staff import staff_bp # noqa
+app.register_blueprint(staff_bp, url_prefix="/web/staff")
+
+from rest_api.views.order import order_bp # noqa
+app.register_blueprint(order_bp, url_prefix="/web/order")
+
+from rest_api.views.address import address_bp # noqa
+app.register_blueprint(address_bp, url_prefix="/web/address")
+
+from rest_api.views.tracking_log import trk_log_bp # noqa
+app.register_blueprint(trk_log_bp, url_prefix="/web/tracking_log")
+
+from rest_api.views.company import company_bp # noqa
+app.register_blueprint(company_bp, url_prefix="/web/company")
+
+from rest_api.views.post import post_bp # noqa
+app.register_blueprint(post_bp, url_prefix="/web/post")

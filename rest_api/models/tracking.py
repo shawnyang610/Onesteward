@@ -1,4 +1,5 @@
 from rest_api import db
+from rest_api.models.attachment import AttachmentModel # noqa
 
 # tracking logs for orders, 1 order has many logs
 
@@ -17,6 +18,8 @@ class TrackingModel(db.Model):
     # no need for inverse relation
     user_id = db.Column (db.Integer)
     is_deleted = db.Column(db.Integer)
+
+    attachments = db.relationship("AttachmentModel")
 
     def __init__(self, message, order_id, staff_id, user_id):
         self.message = message
