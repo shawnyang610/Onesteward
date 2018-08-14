@@ -7,9 +7,9 @@ def user_register():
     return render_template("user_register.html")
 
 
-@user_bp.route("/login")
-def user_login():
-    return render_template("user_login.html")
+# @user_bp.route("/login")
+# def user_login():
+#     return render_template("user_login.html")
 
 
 @user_bp.route("/account")

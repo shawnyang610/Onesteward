@@ -10,14 +10,12 @@ class CompanyModel(db.Model):
     name = db.Column(db.String(80))
     email = db.Column(db.String(80))
     phone = db.Column(db.String(20))
-    password_hash = db.Column (db.String(256))
     is_deleted =db.Column(db.Integer)
 
     addresses = db.relationship ("AddressModel", lazy="dynamic")
 
-    def __init__(self, name, password_hash, email, phone):
+    def __init__(self, name, email, phone):
         self.name = name
-        self.password_hash = password_hash
         self.email = email
         self.phone = phone
         self.is_deleted=0
@@ -36,6 +34,11 @@ class CompanyModel(db.Model):
     @classmethod
     def find_by_name(cls,name):
         return cls.query.filter_by(name=name, is_deleted=0).first()
+
+
+    @classmethod
+    def find_by_email(cls, email):
+        return cls.query.filter_by(email=email, is_deleted=0).first()
 
     @classmethod
     def find_all(cls):

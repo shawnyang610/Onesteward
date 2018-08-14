@@ -7,9 +7,9 @@ def staff_register():
     return render_template("staff_register.html")
 
 
-@staff_bp.route("/login")
-def staff_login():
-    return render_template("staff_login.html")
+# @staff_bp.route("/login")
+# def staff_login():
+#     return render_template("staff_login.html")
 
 
 @staff_bp.route("/info")

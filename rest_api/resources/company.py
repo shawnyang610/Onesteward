@@ -1,5 +1,5 @@
 from flask_restful import Resource, reqparse
-from werkzeug.security import generate_password_hash, check_password_hash
+# from werkzeug.security import generate_password_hash, check_password_hash
 from rest_api.models.company import CompanyModel
 from rest_api.models.address import AddressModel
 from flask_jwt_extended import (
@@ -17,9 +17,6 @@ class CompanyRegister(Resource):
     company_parser = reqparse.RequestParser()
     company_parser.add_argument(
         "company_name", type=str, required=True, help="company name cannot be blank."
-    )
-    company_parser.add_argument(
-        "password", type=str, required=True, help="password cannot be blank."
     )
     company_parser.add_argument(
         "email", type=str, required=True, help="email cannot be blank."
@@ -60,7 +57,6 @@ class CompanyRegister(Resource):
 
         company = CompanyModel(
             data["company_name"],
-            generate_password_hash(data["password"]),
             data["email"],
             data["phone"]
             )
@@ -95,9 +91,9 @@ class CompanyCloseAccount(Resource):
     company_parser.add_argument(
         "company_name", type=str, required=True, help="company name cannot be blank."
     )
-    company_parser.add_argument(
-        "password", type=str, required=True, help="password cannot be blank."
-    )
+    # company_parser.add_argument(
+    #     "password", type=str, required=True, help="password cannot be blank."
+    # )
 
     @jwt_required
     def delete(self):
@@ -113,10 +109,10 @@ class CompanyCloseAccount(Resource):
             return {
                 "message":"company name:{} not found".format(data["company_name"])
                 },404
-        if not check_password_hash(company.password_hash, data["password"]):
-            return {
-                "message": "incorrect password."
-            },401
+        # if not check_password_hash(company.password_hash, data["password"]):
+        #     return {
+        #         "message": "incorrect password."
+        #     },401
 
         company.delete_from_db()
         return {
@@ -133,9 +129,9 @@ class CompanyUpdateInfo(Resource):
     company_parser.add_argument(
         "company_name", type=str, required=True, help="company name cannot be blank."
     )
-    company_parser.add_argument(
-        "password", type=str, required=True, help="password cannot be blank."
-    )
+    # company_parser.add_argument(
+    #     "password", type=str, required=True, help="password cannot be blank."
+    # )
     company_parser.add_argument(
         "email", type=str, required=True, help="email cannot be blank."
     )
@@ -179,9 +175,7 @@ class CompanyAccountInfo(Resource):
     company_parser.add_argument(
         "company_name", type=str, required=True, help="company name cannot be blank."
     )
-    company_parser.add_argument(
-        "password", type=str, required=True, help="password cannot be blank."
-    )
+
     @jwt_required
     def post(self):
         data = self.company_parser.parse_args()

@@ -6,4 +6,22 @@
     <h1>create and update template</h1>
 </div>
 
+<div>
+    <form method = "POST">
+
+        {{ form.hidden_tag() }}
+
+        {{ form.company_name.label }} {{ form.company_name() }} <br>
+
+        {{ form.email.label}} {{form.email() }} <br>
+
+        {{ form.phone.label}} {{ form.phone()}} <br>
+
+        {{ form.submit() }}
+
+
+
+    </form>
+</div>
+
 {% endblock %}

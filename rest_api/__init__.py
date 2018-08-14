@@ -5,6 +5,7 @@ from flask_jwt_extended import JWTManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from werkzeug.security import generate_password_hash
 
 ###########################
 #### config flask app ####
@@ -125,6 +126,7 @@ api.add_resource (AddressDelete, "/address/delete")
 ######################################################
 
 
+
 ########################################
 #### login ############################
 #######################################
@@ -133,7 +135,31 @@ login_manager = LoginManager()
 
 login_manager.init_app(app)
 
-login_manager.login_view = "users.login"
+login_manager.login_view = "auth_bp.login"
+
+
+###################################################
+#### add onesteward as first company ##############
+#### add admin as super user         ##############
+###################################################
+from rest_api.models.company import CompanyModel # noqa
+from rest_api.models.staff import StaffModel    # noqa
+@app.before_first_request
+def add_super_company_user():
+    first_company = CompanyModel(
+        "OneSteward",
+        "admin@onesteward.com",
+        "555-555-5555")
+    first_company.save_to_db()
+
+    first_staff = StaffModel(
+        "admin",
+        "admin",
+        generate_password_hash("admin_password"),
+        first_company.id
+    )
+    first_staff.save_to_db()
+
 
 
 ########################################
