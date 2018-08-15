@@ -6,4 +6,26 @@
     <p> create and update here</p>
 </div>
 
+
+
+
+
+<div class="jumbotron">
+    <form method = "POST">
+
+        {{ form.hidden_tag() }}
+
+        {{ form.line1.label}} {{form.line1()}} <br>
+
+        {{form.line2.label}} {{form.line2()}} <br>
+
+        {{form.city.label}} {{form.city()}} <br>
+
+        {{form.state.label}} {{form.state()}} <br>
+
+        {{form.zip.label}} {{form.zip()}} <br>
+
+        {{ form.submit() }}
+    </form>
+</div>
 {% endblock %}

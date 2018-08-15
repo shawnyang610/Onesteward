@@ -30,6 +30,9 @@ class CompanyModel(db.Model):
             "addresses": [address.json() for address in self.addresses.all()]
         }
 
+    @classmethod
+    def find_by_id(cls, id):
+        return cls.query.filter_by(id=id, is_deleted=0).first()
 
     @classmethod
     def find_by_name(cls,name):
@@ -42,7 +45,17 @@ class CompanyModel(db.Model):
 
     @classmethod
     def find_all(cls):
-        return cls.query.filter_by(is_deleted=0)
+        return cls.query.filter_by(is_deleted=0).order_by(CompanyModel.name)
+
+
+    def get_active_addresses(self):
+
+        addresses = self.addresses.all()
+
+        active_addresses = filter(lambda address: address.is_deleted==0, addresses)
+
+        return active_addresses
+
 
     def save_to_db(self):
         db.session.add(self)
@@ -52,3 +65,4 @@ class CompanyModel(db.Model):
         self.is_deleted=1
         db.session.add(self)
         db.session.commit()
+

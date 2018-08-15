@@ -144,22 +144,37 @@ login_manager.login_view = "auth_bp.login"
 ###################################################
 from rest_api.models.company import CompanyModel # noqa
 from rest_api.models.staff import StaffModel    # noqa
+from rest_api.models.user import UserModel # noqa
 @app.before_first_request
 def add_super_company_user():
-    first_company = CompanyModel(
-        "OneSteward",
-        "admin@onesteward.com",
-        "555-555-5555")
-    first_company.save_to_db()
 
-    first_staff = StaffModel(
-        "admin",
-        "admin",
-        generate_password_hash("admin_password"),
-        first_company.id
-    )
-    first_staff.save_to_db()
+    first_company = CompanyModel.find_by_name("OneSteward")
 
+    if not first_company:
+        first_company = CompanyModel(
+            "OneSteward",
+            "admin@onesteward.com",
+            "555-555-5555")
+        first_company.save_to_db()
+
+    first_staff = StaffModel.find_by_name("admin")
+    if not first_staff:
+        first_staff = StaffModel(
+            "admin",
+            "admin",
+            generate_password_hash("admin_password"),
+            first_company.id)
+
+        first_staff.save_to_db()
+
+    first_user = UserModel.find_by_name("NA")
+    if not first_user:
+        first_user = UserModel(
+            generate_password_hash("admin_password"),
+            name = "NA",
+            email="NA")
+
+        first_user.save_to_db()
 
 
 ########################################
@@ -189,3 +204,6 @@ app.register_blueprint(company_bp, url_prefix="/web/company")
 
 from rest_api.views.post import post_bp # noqa
 app.register_blueprint(post_bp, url_prefix="/web/post")
+
+from rest_api.views.admin import admin_bp # noqa
+app.register_blueprint(admin_bp, url_prefix="/web/admin")
