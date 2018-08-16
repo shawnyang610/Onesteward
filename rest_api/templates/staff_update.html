@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="jumbotron">
+    <h1>hello from staff_update</h1>
+    <h1>update employee info</h1>
+</div>
+
+
+<div class="jumbotron"></div>
+
+<form method = "POST">
+
+    {{ form.hidden_tag() }}
+
+    username: {{staff.name}} <br>
+
+    {{form.company_id.label}} {{form.company_id()}} <br>
+
+    {{ form.role.label}} {{form.role() }} <br>
+
+    {{ form.password.label}} {{ form.password()}} <br>
+
+    {{ form.pass_confirm.label}} {{form.pass_confirm()}} <br>
+
+    {{ form.submit() }}
+</form>
+</div>
+
+
+
+{% endblock %}

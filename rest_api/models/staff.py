@@ -47,7 +47,8 @@ class StaffModel(db.Model):
 
     @classmethod
     def find_all(cls):
-        return cls.query.all()
+        return cls.query.filter_by(is_deleted=0).order_by(cls.company_id)
+
 
     def save_to_db(self):
         db.session.add(self)

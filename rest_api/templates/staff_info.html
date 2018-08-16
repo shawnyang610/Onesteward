@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="jumbotron">
+    <h1>hello from staff_account</h1>
+    <p> displays list of all staffs</p>
+</div>
+
+
+<div class="jumbotron">
+
+    {% for staff in staffs.items %}
+
+        <h3>{{staff.name}} </h3>
+        <br>
+        <p>staff id:{{ staff.id }}</p>
+        <p>company: {{staff.company.name}}</p>
+        <p>role: {{staff.role}}</p>
+        <a href="{{ url_for("staff.staff_close_account", staff_id=staff.id) }}">Delete</a> | 
+        <a href="{{ url_for("staff.staff_update", staff_id=staff.id) }}">Edit</a> | 
+        <br>
+        <br>
+    {% endfor %}
+</div>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+      {% for page_num in staffs.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+         {% if staffs.page == page_num %}
+         <li class="page-item disabled">
+           <a class="page-link" href="{{ url_for('staff.staff_info', page=page_num) }}">{{ page_num }}</a></li>
+         </li>
+         {% else %}
+           <li class="page-item"><a class="page-link" href="{{ url_for('staff.staff_info', page=page_num) }}">{{ page_num }}</a></li>
+         {% endif %}
+     {% endfor %}
+   </nav>
+{% endblock %}
+

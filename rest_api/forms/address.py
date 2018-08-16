@@ -1,7 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, ValidationError
+from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
-from rest_api.models.address import AddressModel
 
 
 
