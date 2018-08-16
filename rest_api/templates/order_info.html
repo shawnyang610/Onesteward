@@ -9,4 +9,19 @@
     <p> options: change order name</p>
 </div>
 
+
+<div class="jumbotron">
+    <p>Order Info:</p>
+    <a href="{{ url_for("order.order_delete", order_id=order.id) }}">Delete</a> | 
+    <a href="{{ url_for("order.order_update", order_id=order.id) }}">Edit</a> | 
+    <ul>
+        <li>Order ID: {{order.id}}</li>
+        <li>Order Number: {{order.ur_code}}</li>
+        <li>Order Type: {{order.name}}</li>
+        <li>Handling Staff: {{order.staff.name}}</li>
+        <li>Client: {{order.user.name}}</li>
+    </ul>
+
+</div>
+
 {% endblock %}

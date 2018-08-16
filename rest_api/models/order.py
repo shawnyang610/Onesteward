@@ -1,7 +1,8 @@
 from rest_api import db
 from rest_api.models.tracking import TrackingModel # noqa
-# from rest_api.models.staff import StaffModel
-# from rest_api.models.company import CompanyModel
+from rest_api.models.staff import StaffModel # noqa
+from rest_api.models.company import CompanyModel # noqa
+from datetime import datetime
 
 
 
@@ -13,9 +14,13 @@ class OrderModel(db.Model):
     ur_code = db.Column (db.String(100))
     # name of the ordered service
     name = db.Column(db.String(80))
+    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
     staff_id = db.Column(db.Integer, db.ForeignKey("staffs.id"))
     # filled in when user registers new account and add this order in account
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    staff = db.relationship("StaffModel")
+    user = db.relationship("UserModel")
     is_deleted = db.Column(db.Integer)
 
     tracking_logs = db.relationship("TrackingModel", lazy="dynamic")
@@ -40,12 +45,16 @@ class OrderModel(db.Model):
         }
 
     @classmethod
+    def find_by_id(cls, id):
+        return cls.query.filter_by(id=id, is_deleted=0).first()
+
+    @classmethod
     def find_by_ur_code(cls,ur_code):
         return cls.query.filter_by(ur_code=ur_code, is_deleted=0).first()
 
     @classmethod
     def find_all(cls):
-        return cls.query.filter_by(is_deleted=0)
+        return cls.query.filter_by(is_deleted=0).order_by(cls.date)
 
     def save_to_db(self):
         db.session.add(self)
