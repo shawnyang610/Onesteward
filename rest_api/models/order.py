@@ -7,6 +7,7 @@ from datetime import datetime
 
 
 
+
 class OrderModel(db.Model):
     __tablename__ = "orders"
 
@@ -22,7 +23,6 @@ class OrderModel(db.Model):
     staff = db.relationship("StaffModel")
     user = db.relationship("UserModel")
     is_deleted = db.Column(db.Integer)
-
     tracking_logs = db.relationship("TrackingModel", lazy="dynamic")
 
     def __init__(self, ur_code, name, staff_id):

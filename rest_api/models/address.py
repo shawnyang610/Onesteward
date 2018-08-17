@@ -1,5 +1,5 @@
 from rest_api import db
-
+from datetime import datetime
 # company addresses, each company can have many locations
 class AddressModel(db.Model):
     __tablename__ = "addresses"
@@ -11,6 +11,7 @@ class AddressModel(db.Model):
     city = db.Column (db.String(80))
     state = db.Column (db.String(80))
     zip = db.Column (db.String(10))
+    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     company_id = db.Column(db.Integer, db.ForeignKey("companies.id"))
     # company = db.relationship("CompanyModel")

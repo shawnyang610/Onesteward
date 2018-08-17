@@ -1,6 +1,6 @@
 from rest_api import db
 from rest_api.models.company import CompanyModel # noqa
-
+from datetime import datetime
 class StaffModel(db.Model):
     __tablename__ = "staffs"
 
@@ -10,6 +10,8 @@ class StaffModel(db.Model):
     password_hash = db.Column (db.String(256))
     company_id = db.Column(db.Integer, db.ForeignKey("companies.id"))
     company = db.relationship("CompanyModel")
+    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
     is_deleted = db.Column(db.Integer)
 
     def __init__(self, name, role,password_hash,company_id):

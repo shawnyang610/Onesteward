@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request
 from rest_api.forms.order import OrderCreateForm, OrderUpdateForm
 from rest_api.models.order import OrderModel
+from rest_api.models.tracking import TrackingModel
 
 order_bp = Blueprint("order", __name__)
 
@@ -47,7 +48,11 @@ def order_info(order_id):
 
     order = OrderModel.find_by_id(order_id)
 
-    return render_template("order_info.html", order=order)
+    page = request.args.get("page", 1, type=int)
+
+    posts = TrackingModel.find_by_order_id(order_id).paginate(page=page, per_page=10)
+
+    return render_template("order_info.html", order=order, posts=posts)
 
 
 @order_bp.route("/delete/<int:order_id>")

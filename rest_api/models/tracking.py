@@ -1,6 +1,8 @@
 from rest_api import db
 from rest_api.models.attachment import AttachmentModel # noqa
-
+from datetime import datetime
+from rest_api.models.staff import StaffModel
+# from rest_api.models.user import UserModel 
 # tracking logs for orders, 1 order has many logs
 
 class TrackingModel(db.Model):
@@ -8,15 +10,18 @@ class TrackingModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     message = db.Column(db.String(200))
+    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     # need inverse relation so order retrieves all its tracking logs
     order_id = db.Column(db.Integer, db.ForeignKey("orders.id"))
     # staff who summited the tracking log
     # no need for inverse relation
     staff_id = db.Column(db.Integer, db.ForeignKey("staffs.id"))
+    staff = db.relationship("StaffModel")
     # user comments, coresponds to an existing staff tracking log
     # no need for inverse relation
-    user_id = db.Column (db.Integer)
+    user_id = db.Column (db.Integer, db.ForeignKey("users.id"))
+    user = db.relationship("UserModel")
     is_deleted = db.Column(db.Integer)
 
     attachments = db.relationship("AttachmentModel")

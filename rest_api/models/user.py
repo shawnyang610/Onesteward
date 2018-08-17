@@ -1,5 +1,6 @@
 from rest_api import db
 from rest_api.models.order import OrderModel # noqa
+from datetime import datetime
 
 class UserModel(db.Model):
     __tablename__ = "users"
@@ -9,6 +10,8 @@ class UserModel(db.Model):
     name = db.Column(db.String(50))
     email = db.Column(db.String(50))
     phone = db.Column(db.String(20))
+    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
 
     orders = db.relationship("OrderModel", lazy="dynamic")
 

@@ -66,3 +66,8 @@ def staff_close_account(staff_id):
     staff.delete_from_db()
 
     return redirect(url_for("staff.staff_info"))
+
+@staff_bp.route("/workspace")
+def staff_workspace():
+
+    return render_template("staff_workspace.html")

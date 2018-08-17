@@ -7,4 +7,18 @@
     
 </div>
 
+
+<div class="jumbotron">
+
+    <form method="POST" enctype="multipart/form-data">
+        {{form.hidden_tag()}}
+        {{form.staff_id.label}} {{form.staff_id()}} <br>
+        {{form.user_id.label}} {{form.user_id()}} <br>
+        {{form.message.label}} {{form.message()}} <br>
+        {{form.attachment.label}} {{form.attachment()}} <br>
+        {{form.submit()}}
+    </form>
+
+</div>
+
 {% endblock %}

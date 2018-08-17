@@ -1,6 +1,6 @@
 from rest_api import db
 from rest_api.models.address import AddressModel # noqa
-
+from datetime import datetime
 
 class CompanyModel(db.Model):
 
@@ -11,6 +11,7 @@ class CompanyModel(db.Model):
     email = db.Column(db.String(80))
     phone = db.Column(db.String(20))
     is_deleted =db.Column(db.Integer)
+    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     addresses = db.relationship ("AddressModel", lazy="dynamic")
 
