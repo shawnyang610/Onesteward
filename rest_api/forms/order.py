@@ -22,3 +22,14 @@ class OrderUpdateForm (FlaskForm):
     name = StringField("Service Type", validators=[DataRequired()])
     staff_id = IntegerField("Staff ID", validators=[DataRequired()])
     submit = SubmitField("Update Order")
+
+
+class OrderCheckStatusForm(FlaskForm):
+    order_number = StringField("Order Number", validators=[DataRequired(), NumberRange()])
+    submit = SubmitField("Search")
+
+
+    def check_ur_code(self, order_number):
+
+        if not OrderModel.find_by_ur_code(order_number):
+            raise ValidationError("no such order number found, please try again.")

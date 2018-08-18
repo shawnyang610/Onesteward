@@ -1,7 +1,8 @@
 from rest_api import db
 from rest_api.models.company import CompanyModel # noqa
 from datetime import datetime
-class StaffModel(db.Model):
+from flask_login import UserMixin
+class StaffModel(db.Model, UserMixin):
     __tablename__ = "staffs"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -60,3 +61,14 @@ class StaffModel(db.Model):
         self.is_deleted=1
         db.session.add(self)
         db.session.commit()
+
+
+    ############################
+    #### overrides UserMixin. adding "staff_" identifier to distinguish
+    #### from users during @flask_login.user_loader callback. ###########
+    def get_id(self):
+        try:
+            return "staff_"+str(self.id)
+
+        except AttributeError:
+            raise NotImplementedError('No `id` attribute - override `get_id`')

@@ -7,4 +7,18 @@
     <p>redirect to site management pages according to user authorization level, admin, company admin, company staff</p>
 </div>
 
+
+
+
+<div class="jumbotron">
+        {% from "_formhelpers.html" import render_field %}
+    
+    
+        <form action="" method="POST">
+            {{ form.hidden_tag() }}
+            {{ render_field(form.username) }}
+            {{ render_field(form.password)}}
+            {{ form.submit()}}
+        </form>
+    </div>
 {% endblock %}

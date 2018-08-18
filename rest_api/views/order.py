@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, request
-from rest_api.forms.order import OrderCreateForm, OrderUpdateForm
+from rest_api.forms.order import OrderCreateForm, OrderUpdateForm, OrderCheckStatusForm
 from rest_api.models.order import OrderModel
 from rest_api.models.tracking import TrackingModel
 
@@ -72,3 +72,15 @@ def order_list():
     orders = OrderModel.find_all().paginate(page=page, per_page=10)
 
     return render_template("order_list.html", orders=orders)
+
+
+@order_bp.route("check_status", methods=["GET","POST"])
+def order_check_status():
+    form = OrderCheckStatusForm()
+
+    if form.validate_on_submit():
+        order = OrderModel.find_by_ur_code(form.order_number.data)
+        return redirect(url_for("order.order_info", order_id=order.id))
+
+    return render_template("order_check_status.html", form=form)
+

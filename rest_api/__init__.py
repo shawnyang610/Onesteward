@@ -135,7 +135,17 @@ login_manager = LoginManager()
 
 login_manager.init_app(app)
 
-login_manager.login_view = "auth_bp.login"
+login_manager.login_view = "auth.login"
+
+@login_manager.user_loader
+def load_user(user_id):
+    role = user_id.split("_")[0]
+    _id = user_id.split("_")[1]
+    if role == "staff":
+        return StaffModel.find_by_id(int(_id))
+    if role == "user":
+        return UserModel.find_by_id(int(_id))
+    # return StaffModel.find_by_id(user_id)
 
 
 ###################################################
@@ -207,3 +217,6 @@ app.register_blueprint(post_bp, url_prefix="/web/post")
 
 from rest_api.views.admin import admin_bp # noqa
 app.register_blueprint(admin_bp, url_prefix="/web/admin")
+
+from rest_api.views.auth import auth_bp # noqa
+app.register_blueprint(auth_bp)
