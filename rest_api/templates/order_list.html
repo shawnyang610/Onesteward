@@ -1,9 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="jumbotron">
-    <h1>hello from order list</h1>
-</div>
 
 <div class="jumbotron">
 
@@ -12,6 +9,7 @@
         <h3><a href="{{ url_for("order.order_info", order_id=order.id) }}">order id: {{order.id}}</a> </h3>
         <p>order date: {{order.date.strftime("%B %d, %Y")}}</p>
         <p>staff: {{order.staff.name}}</p>
+        <p>company:{{ order.company.name }}</p>
     
     {% endfor %}
 </div>

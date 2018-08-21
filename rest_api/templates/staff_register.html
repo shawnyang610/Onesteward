@@ -1,26 +1,19 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="jumbotron">
-    <h1>hello from staff_register</h1>
-    <h1>register new staff</h1>
-</div>
-
 
 <div class="jumbotron">
+    {% from "_formhelpers.html" import render_field %}
+
     <form method="POST">
 
         {{ form.hidden_tag() }}
 
-        {{ form.username.label }} {{ form.username() }} <br>
-
-        {{form.company_id.label}} {{form.company_id()}} <br>
-
-        {{ form.role.label}} {{form.role() }} <br>
-
-        {{ form.password.label}} {{ form.password()}} <br>
-
-        {{form.pass_confirm.label}} {{form.pass_confirm()}}<br>
+        {{ render_field(form.username)}}
+        {{ render_field(form.company_id)}}
+        {{ render_field(form.role)}}
+        {{ render_field(form.password)}}
+        {{ render_field(form.pass_confirm)}}
 
         {{ form.submit() }}
     </form>

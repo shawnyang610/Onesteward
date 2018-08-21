@@ -2,7 +2,15 @@ from flask import Blueprint, render_template, redirect, url_for, request
 from rest_api.forms.order import OrderCreateForm, OrderUpdateForm, OrderCheckStatusForm
 from rest_api.models.order import OrderModel
 from rest_api.models.tracking import TrackingModel
-
+from rest_api.models.company import CompanyModel
+from flask_login import login_required, current_user
+from rest_api.models.staff import StaffModel
+from rest_api.controls.auth import (
+    is_admin,
+    is_company_admin,
+    is_staff,
+    is_user,
+    render_error_page_unauthorized_access)
 order_bp = Blueprint("order", __name__)
 
 
@@ -66,12 +74,25 @@ def order_delete(order_id):
 
 
 @order_bp.route("/list")
+@login_required
 def order_list():
-
+    
     page = request.args.get("page", 1, type=int)
-    orders = OrderModel.find_all().paginate(page=page, per_page=10)
+
+    if is_admin(current_user):
+        orders = OrderModel.find_all().paginate(page=page, per_page=5)
+
+    elif is_company_admin(current_user):
+        orders=OrderModel.find_by_company(current_user.company).paginate(page=page, per_page=5)
+        # orders=OrderModel.find_by_company_id(current_user.company_id).paginate(page=page, per_page=5)
+
+    elif is_staff(current_user):
+        orders = OrderModel.find_by_staff_id(current_user.id).paginate(page=page, per_page=5)
+    elif is_user(current_user):
+        orders = OrderModel.find_by_user_id(current_user.id).paginate(page=page, per_page=5)
 
     return render_template("order_list.html", orders=orders)
+
 
 
 @order_bp.route("check_status", methods=["GET","POST"])

@@ -1,14 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="jumbotron">
-    <h1>hello from login</h1>
-    <p>user and staff login endpoints using the same template</p>
-    <p>redirect to site management pages according to user authorization level, admin, company admin, company staff</p>
-</div>
-
-
-
 
 <div class="jumbotron">
         {% from "_formhelpers.html" import render_field %}
@@ -20,5 +12,7 @@
             {{ render_field(form.password)}}
             {{ form.submit()}}
         </form>
+        <br>
+        <p>no account yet? <a href="{{url_for("user.user_register")}}">Register a free account</a></p>
     </div>
 {% endblock %}

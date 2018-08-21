@@ -1,31 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="jumbotron">
-    <h1>hello from company_create</h1>
-    <h1>create and update template</h1>
-</div>
+
+
+{% from "_formhelpers.html" import render_field %}
 
 <div class="jumbotron">
     <form method = "POST">
 
         {{ form.hidden_tag() }}
 
-        {{ form.company_name.label }} {{ form.company_name() }} <br>
+        {{render_field(form.company_name)}}
 
-        {{ form.email.label}} {{form.email() }} <br>
+        {{render_field(form.email)}}
 
-        {{ form.phone.label}} {{ form.phone()}} <br>
+        {{render_field(form.phone)}}
 
-        {{ form.line1.label}} {{form.line1()}} <br>
+        {{render_field(form.line1)}}
 
-        {{form.line2.label}} {{form.line2()}} <br>
+        {{render_field(form.line2)}}
 
-        {{form.city.label}} {{form.city()}} <br>
+        {{render_field(form.city)}}
 
-        {{form.state.label}} {{form.state()}} <br>
+        {{render_field(form.state)}}
 
-        {{form.zip.label}} {{form.zip()}} <br>
+        {{render_field(form.zip)}}
 
         {{ form.submit() }}
     </form>

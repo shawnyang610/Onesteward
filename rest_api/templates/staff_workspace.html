@@ -1,14 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="jumbotron">
-    <h1>hello from staff_workspace</h1>
-</div>
 
 <div class="jumbotron">
+
     <a href="{{url_for("order.order_create")}}">New Order</a> | 
     <a href="{{url_for("order.order_list")}}">My Orders</a> | 
-    <a href="{{url_for("order.order_list")}}">Company Orders</a>
+    <a href="{{url_for("order.order_list")}}">Company Orders</a> | 
+    <a href="{{url_for("company.company_update", company_id=current_user.company_id)}}">Edit my company</a> | 
+    <a href="{{url_for("staff.staff_register")}}">Register staff</a> | 
+    <a href="{{url_for("staff.staff_info")}}">View all company staffs</a>
 </div>
 
 {% endblock %}

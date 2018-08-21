@@ -12,6 +12,7 @@ class CompanyModel(db.Model):
     phone = db.Column(db.String(20))
     is_deleted =db.Column(db.Integer)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    staffs = db.relationship("StaffModel", back_populates="company")
 
     addresses = db.relationship ("AddressModel", lazy="dynamic")
 

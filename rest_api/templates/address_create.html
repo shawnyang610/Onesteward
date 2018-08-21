@@ -1,12 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="jumbotron">
-    <h1>hello from address page</h1>
-    <p> create and update here</p>
-</div>
 
 
+{% from "_formhelpers.html" import render_field %}
 
 
 
@@ -15,15 +12,11 @@
 
         {{ form.hidden_tag() }}
 
-        {{ form.line1.label}} {{form.line1()}} <br>
-
-        {{form.line2.label}} {{form.line2()}} <br>
-
-        {{form.city.label}} {{form.city()}} <br>
-
-        {{form.state.label}} {{form.state()}} <br>
-
-        {{form.zip.label}} {{form.zip()}} <br>
+        {{ render_field(form.line1) }}
+        {{ render_field(form.line2) }}
+        {{ render_field(form.city) }}
+        {{ render_field(form.state) }}
+        {{ render_field(form.zip) }}
 
         {{ form.submit() }}
     </form>

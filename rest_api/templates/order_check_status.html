@@ -1,15 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="jumbotron">
-    <h1>hello from order_check_status</h1>
 
-</div>
+
+{% from "_formhelpers.html" import render_field %}
 
 <div class="jumbotron">
     <form action="" method="POST">
         {{form.hidden_tag()}}
-        {{form.order_number.label}} {{form.order_number()}} <br>
+        {{ render_field(form.order_number)}}
         {{form.submit()}}
     </form>
 </div>

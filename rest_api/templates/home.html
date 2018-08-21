@@ -2,7 +2,13 @@
 {% block content %}
 
 <div class="jumbotron">
-    <h1>hello from homepage</h1>
+    <h5>Hello,</h5>
+    <br>
+    <br>
+    <h6>if you are a customer of our parners, track your order <a href="{{ url_for("order.order_check_status") }}">here.</a></h6>
+    <br>
+    <h6>If you have placed orders with us before, it's recomanded to <a href="{{url_for("user.user_register")}}">register</a> a free account and link all you past orders.</h6>
+    <h6>and <a href="{{ url_for("auth.login") }}">Login </a> to access all your orders!</h6>
 </div>
 
 {% endblock %}

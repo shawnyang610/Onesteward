@@ -22,16 +22,36 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                 <a class="nav-item nav-link" href="{{ url_for("web.index") }}">Home <span class="sr-only">(current)</span></a>
-                <a class="nav-item nav-link" href="{{ url_for("order.order_check_status") }}">Track</a>
-                <a class="nav-item nav-link" href="{{ url_for("order.order_list") }}">Orders</a>
-                <a class="nav-item nav-link" href="#">Account</a>
-                <a class="nav-item nav-link" href="{{ url_for("user.user_register") }}">Register</a>
-                <a class="nav-item nav-link" href="{{ url_for("auth.login") }}">Login</a>
-                <a class="nav-item nav-link" href="{{ url_for("auth.logout") }}">Logout</a>
+                <a href="{{url_for("company.company_info")}}" class="nav-item nav-link right">Our Partners</a>
 
+                <a class="nav-item nav-link" href="{{ url_for("order.order_check_status") }}">Track Order</a>
+                {% if not current_user.role  %}
+                <a class="nav-item nav-link" href="{{ url_for("order.order_list") }}">Order History</a>
+                <a class="nav-item nav-link" href="{{ url_for("user.user_account", user_id = current_user.id) }}">Account</a>
+                {% endif %}
+
+                {% if current_user.is_authenticated and current_user.role and current_user.role != "admin"%}
                 <a class="nav-item nav-link" href="{{url_for("staff.staff_workspace")}}">Workspace</a>
+                {% endif %}
+
+                {% if current_user.is_authenticated and current_user.role == "admin" %}
                 <a class="nav-item nav-link" href="{{ url_for("admin.control_panel") }}">Admin Panel</a>
-                </div>
+                {% endif %}
+
+                {% if current_user.is_authenticated %}
+                <a href="#" class="nav-item nav-link right">Hi, {{ current_user.name }} </a>
+                {% endif %}
+
+                {% if not current_user.is_authenticated %}
+                <!-- <a class="nav-item nav-link" href="{{ url_for("user.user_register") }}">Register</a> -->
+                <a class="nav-item nav-link" href="{{ url_for("auth.login") }}">Login</a>
+                {% endif %}
+
+                {% if current_user.is_authenticated %}
+                <a class="nav-item nav-link" href="{{ url_for("auth.logout") }}">Logout</a>
+                {% endif %}
+
+            </div>
             </div>
             </nav>
             </div>

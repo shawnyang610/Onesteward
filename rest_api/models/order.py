@@ -20,8 +20,15 @@ class OrderModel(db.Model):
     staff_id = db.Column(db.Integer, db.ForeignKey("staffs.id"))
     # filled in when user registers new account and add this order in account
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    staff = db.relationship("StaffModel")
+    staff = db.relationship("StaffModel", back_populates="orders", uselist=False)
     user = db.relationship("UserModel")
+    company = db.relationship (
+        CompanyModel,
+        secondary="join(StaffModel, CompanyModel, StaffModel.company_id==CompanyModel.id)",
+        primaryjoin=staff_id==StaffModel.id,
+        uselist=False,
+        backref="orders"
+        )
     is_deleted = db.Column(db.Integer)
     tracking_logs = db.relationship("TrackingModel", lazy="dynamic")
 
@@ -51,6 +58,23 @@ class OrderModel(db.Model):
     @classmethod
     def find_by_ur_code(cls,ur_code):
         return cls.query.filter_by(ur_code=ur_code, is_deleted=0).first()
+
+    @classmethod
+    def find_by_staff_id(cls, staff_id):
+        return db.session.query(OrderModel).filter_by(staff_id = staff_id, is_deleted=0).order_by(cls.date)
+
+
+    @classmethod
+    def find_by_user_id(cls, user_id):
+        return cls.query.filter_by(user_id = user_id, is_deleted=0).order_by(cls.date)
+    
+    @classmethod
+    def find_by_company(cls, company):
+        return cls.query.filter(cls.company.has(id=company.id)).order_by(cls.date)
+
+    @classmethod
+    def find_by_company_id(cls, company_id):
+        return cls.query.filter(cls.company.has(id=company_id)).order_by(cls.date)
 
     @classmethod
     def find_all(cls):

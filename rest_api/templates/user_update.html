@@ -2,18 +2,16 @@
 {% block content %}
 
 
-{% from "_formhelpers.html" import render_field %}
-
 <div class="jumbotron">
-    <form method = "POST">
+    {% from "_formhelpers.html" import render_field %}
 
+    <form action="" method="POST">
         {{ form.hidden_tag() }}
-
-        {{ render_field(form.company_name)}}
         {{ render_field(form.email)}}
         {{ render_field(form.phone)}}
-
-        {{ form.submit() }}
+        {{ render_field(form.password)}}
+        {{ render_field(form.pass_confirm)}}
+        {{ form.submit()}}
     </form>
 </div>
 

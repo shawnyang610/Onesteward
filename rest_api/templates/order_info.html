@@ -1,13 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="jumbotron">
-    <h1>hello from order info</h1>
-    <p> main single order info page ,displays options based on auth level</p>
-    <p> options: post message(tracking log for staff)/ (post for user) </p>
-    <p> options: update posts, delete posts </p>
-    <p> options: change order name</p>
-</div>
 
 
 <div class="jumbotron">
@@ -20,6 +13,7 @@
         <li>Order Number: {{order.ur_code}}</li>
         <li>Order Type: {{order.name}}</li>
         <li>Handling Staff: {{order.staff.name}}</li>
+        <!-- <li>Company: {{order.company.name}}</li> -->
         <li>Client: {{order.user.name}}</li>
     </ul>
 

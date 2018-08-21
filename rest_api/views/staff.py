@@ -2,20 +2,34 @@ from flask import Blueprint, render_template, redirect, url_for, request
 from rest_api.forms.staff import StaffCreateForm, StaffUpdateForm
 from rest_api.models.staff import StaffModel
 from werkzeug.security import generate_password_hash
+from flask_login import login_required, current_user
+from rest_api.controls.auth import (
+    is_admin_or_company_admin_of_the_same_company,
+    is_admin,
+    is_company_admin,
+    is_user,
+    is_staff,
+    render_error_page_unauthorized_access)
 
 staff_bp = Blueprint("staff", __name__)
 
 @staff_bp.route("/register", methods=["GET","POST"])
+@login_required
 def staff_register():
+    
+    if is_user(current_user) or is_staff(current_user):
+        return render_error_page_unauthorized_access()
 
     form = StaffCreateForm()
 
     if form.validate_on_submit():
+        if is_company_admin(current_user) and current_user.company_id !=form.company_id.data:
+            return render_error_page_unauthorized_access()
         try:
             staff = StaffModel(
                 form.username.data,
                 form.role.data,
-                form.password.data,
+                generate_password_hash(form.password.data),
                 form.company_id.data)
 
             staff.save_to_db()
@@ -32,9 +46,20 @@ def staff_register():
 
 
 @staff_bp.route("/info")
+@login_required
 def staff_info():
+    
     page = request.args.get("page", 1, type=int)
-    staffs= StaffModel.find_all().paginate(page=page, per_page=10)
+
+    if is_user(current_user):
+        return render_error_page_unauthorized_access()
+    
+    if is_admin(current_user):
+        staffs= StaffModel.find_all()
+    elif is_company_admin(current_user) or is_staff(current_user):
+        staffs= StaffModel.find_by_company_id(current_user.company_id)
+
+    staffs = staffs.paginate(page=page, per_page=5)
 
     return render_template("staff_info.html", staffs=staffs)
 

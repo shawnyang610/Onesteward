@@ -3,8 +3,8 @@ from rest_api.forms.auth import AuthLogin
 from rest_api.models.user import UserModel
 from rest_api.models.staff import StaffModel
 from werkzeug.security import check_password_hash
-from flask_login import login_user, current_user, logout_user, login_required
-
+from flask_login import login_user, logout_user
+from rest_api.controls.auth import render_error_page_wrong_password
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -23,6 +23,9 @@ def login ():
 
         elif user and check_password_hash(user.password_hash, form.password.data):
             login_user(user)
+
+        else:
+            return render_error_page_wrong_password()
 
         next = request.args.get("next")
 

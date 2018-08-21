@@ -1,5 +1,6 @@
 from rest_api import db
 from rest_api.models.company import CompanyModel # noqa
+# from rest_api.models.order import OrderModel # noqa
 from datetime import datetime
 from flask_login import UserMixin
 class StaffModel(db.Model, UserMixin):
@@ -10,7 +11,8 @@ class StaffModel(db.Model, UserMixin):
     role = db.Column(db.String(15))
     password_hash = db.Column (db.String(256))
     company_id = db.Column(db.Integer, db.ForeignKey("companies.id"))
-    company = db.relationship("CompanyModel")
+    company = db.relationship("CompanyModel", back_populates="staffs", uselist=False)
+    orders = db.relationship("OrderModel", back_populates="staff")
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     is_deleted = db.Column(db.Integer)
@@ -51,7 +53,9 @@ class StaffModel(db.Model, UserMixin):
     @classmethod
     def find_all(cls):
         return cls.query.filter_by(is_deleted=0).order_by(cls.company_id)
-
+    @classmethod
+    def find_by_company_id(cls, company_id):
+        return cls.query.filter_by(company_id=company_id, is_deleted=0).order_by(cls.name)
 
     def save_to_db(self):
         db.session.add(self)
