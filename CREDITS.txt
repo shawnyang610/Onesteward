@@ -1,0 +1,2 @@
+https://stackoverflow.com/questions/8561470/sqlalchemy-filtering-by-relationship-attribute
+http://www.patricksoftwareblog.com/tag/docker/
