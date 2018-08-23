@@ -18,8 +18,17 @@ app.config['SECRET_KEY'] = 'myappsecretkey'
 #### config database ######
 ##########################
 basedir = abspath(dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+ join(basedir, "data.sqlite")
+
+app.config['POSTGRES_USER'] = "shawn"
+app.config["POSTGRES_DEFAULT_USER"] = "postgres"
+app.config["POSTGRES_PASSWORD"] = "my_password"
+app.config["POSTGRES_DB"]="onesteward-db"
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+ join(basedir, "data.sqlite")
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://'+ app.config['POSTGRES_USER']+":"+app.config["POSTGRES_PASSWORD"]+"@postgres:5432/"+app.config["POSTGRES_DB"]
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
+
 
 db = SQLAlchemy(app)
 
@@ -131,6 +140,9 @@ api.add_resource (AddressDelete, "/address/delete")
 #### login ############################
 #######################################
 
+from rest_api.models.staff import StaffModel # noqa
+from rest_api.models.user import UserModel # noqa
+
 login_manager = LoginManager()
 
 login_manager.init_app(app)
@@ -152,39 +164,39 @@ def load_user(user_id):
 #### add onesteward as first company ##############
 #### add admin as super user         ##############
 ###################################################
-from rest_api.models.company import CompanyModel # noqa
-from rest_api.models.staff import StaffModel    # noqa
-from rest_api.models.user import UserModel # noqa
-@app.before_first_request
-def add_super_company_user():
+# from rest_api.models.company import CompanyModel # noqa
+# from rest_api.models.staff import StaffModel    # noqa
+# from rest_api.models.user import UserModel # noqa
+# @app.before_first_request
+# def add_super_company_user():
 
-    first_company = CompanyModel.find_by_name("OneSteward")
+#     first_company = CompanyModel.find_by_name("OneSteward")
 
-    if not first_company:
-        first_company = CompanyModel(
-            "OneSteward",
-            "admin@onesteward.com",
-            "555-555-5555")
-        first_company.save_to_db()
+#     if not first_company:
+#         first_company = CompanyModel(
+#             "OneSteward",
+#             "admin@onesteward.com",
+#             "555-555-5555")
+#         first_company.save_to_db()
 
-    first_staff = StaffModel.find_by_name("admin")
-    if not first_staff:
-        first_staff = StaffModel(
-            "admin",
-            "admin",
-            generate_password_hash("admin_password"),
-            first_company.id)
+#     first_staff = StaffModel.find_by_name("admin")
+#     if not first_staff:
+#         first_staff = StaffModel(
+#             "admin",
+#             "admin",
+#             generate_password_hash("admin_password"),
+#             first_company.id)
 
-        first_staff.save_to_db()
+#         first_staff.save_to_db()
 
-    first_user = UserModel.find_by_name("NA")
-    if not first_user:
-        first_user = UserModel(
-            generate_password_hash("admin_password"),
-            name = "NA",
-            email="NA")
+#     first_user = UserModel.find_by_name("NA")
+#     if not first_user:
+#         first_user = UserModel(
+#             generate_password_hash("admin_password"),
+#             name = "NA",
+#             email="NA")
 
-        first_user.save_to_db()
+#         first_user.save_to_db()
 
 
 ########################################

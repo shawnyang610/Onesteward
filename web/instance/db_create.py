@@ -54,7 +54,8 @@ def add_super_company_user():
         first_user = UserModel(
             generate_password_hash("admin_password"),
             name = "NA",
-            email="NA")
+            email="NA",
+            phone="")
 
         first_user.save_to_db()
 
