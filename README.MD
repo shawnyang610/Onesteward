@@ -15,11 +15,27 @@
  - Build:
    - REST API using Flask and SQL
    - prototype web app using Flask
+   - Dockerize web app and rest-api (Current stage)
    - prototype ios app using swift
  - Test:
 
 
+## Build and Run Dockerized web app
+ - Optional: generate postgres Dockerfile from create_postgres_dockerfile.py script
+   - cd ./rest_api/web/
+   - python create_postgres_dockerfile.py
+   - cd ..
 
+ - Optional: run docker in virtualbox using docker-machine
+   - docker-machine create -d virtualbox dev;
+   - eval "$(docker-machine env dev)"
+
+ - Essential: build docker containers and create database tables
+   - docker-compose build
+   - docker-compose up -d
+   - docker-compose run --rm web python ./instance/db_create.py
+
+  
 
 Author: Shawn Yang
 Email: shawnyang610@gmail.com

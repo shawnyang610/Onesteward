@@ -1,7 +1,0 @@
-Flask
-flask_restful
-Flask-JWT-Extended
-Flask-SQLAlchemy
-flask_migrate
-flake8
-
