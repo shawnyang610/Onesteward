@@ -26,7 +26,7 @@ def save_attachment(file_upload, post_id):
     ext_type=filename.split(".")[-1]
     storage_filename = filename_without_ext+ "_"+str(post_id)+"."+ext_type
 
-    filepath = os.path.join(current_app.root_path, "static", storage_filename)
+    filepath = os.path.join(current_app.root_path, "static", "attachments",storage_filename)
 
     file_upload.save(filepath)
     
