@@ -27,7 +27,7 @@
             <li><p>{{post.message}}</p></li>
             <li> attachments: 
                 {% for attachment in post.attachments%}
-                    <a href="{{ url_for("static", filename="attachments/"+attachment.attachment_name) }}">{{attachment.attachment_name}}</a> |    
+                    <a href="{{ url_for("static", filename=attachment.attachment_name) }}">{{attachment.attachment_name}}</a> |    
                 {% endfor %}
             </li>
         </ul>

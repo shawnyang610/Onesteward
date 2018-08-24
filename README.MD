@@ -32,8 +32,8 @@
 
  - Essential: build docker containers and create database tables
    - docker-compose build
-   - docker-compose up -d
-   - docker-compose run --rm web python ./instance/db_create.py
+   - docker-compose up -d (or use: "docker-compose -f docker-compose.yml up -d" for using gunicorn instead)
+   - docker-compose run --rm web python ./instance/db_create.py (only for the first time)
 
   
 
