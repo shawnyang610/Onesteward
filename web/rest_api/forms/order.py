@@ -29,7 +29,7 @@ class OrderCheckStatusForm(FlaskForm):
     submit = SubmitField("Search")
 
 
-    def check_ur_code(self, order_number):
+    def validate_order_number(self, order_number):
 
-        if not OrderModel.find_by_ur_code(order_number):
-            raise ValidationError("no such order number found, please try again.")
+        if not OrderModel.find_by_ur_code(order_number.data):
+            raise ValidationError("no order found, please try again.")

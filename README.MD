@@ -1,5 +1,8 @@
 # Project OneSteward
 
+## Website: 
+ - https://onesteward.com
+
 ## Overview 
  - "OneSteward" or "One Steward Alliance" is aimed to be a cloud-based service that allows small to medium sized companies in the service sector (travel agencies, appostile agents etc) to revolutionize the quality of their services at no extra cost.
  - Alliance members create and manage their orders in the cloud. Their customers can check the status of their orders via web or ios/android app. Upon registration, customers can further manager their accounts and interact with participating companies in an more efficient way.
@@ -32,8 +35,8 @@
 
  - Essential: build docker containers and create database tables
    - docker-compose build
-   - docker-compose up -d
-   - docker-compose run --rm web python ./instance/db_create.py
+   - docker-compose up -d (or use: "docker-compose -f docker-compose.yml up -d" for using gunicorn instead)
+   - docker-compose run --rm web python ./instance/db_create.py (only for the first time)
 
   
 

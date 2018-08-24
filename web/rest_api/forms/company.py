@@ -25,15 +25,15 @@ class RegistrationForm (FlaskForm):
 
     submit = SubmitField("Register!")
 
-    def check_company_name(self, company_name):
+    def validate_company_name(self, company_name):
 
         if CompanyModel.find_by_name(company_name):
-            raise ValidationError("Sorry, that company name already exists.")
+            raise ValidationError("Company name already exists.")
 
 
-    def check_email(self, email):
+    def validate_email(self, email):
         if CompanyModel.find_by_email(email):
-            raise ValidationError("Sorry, that email already exists.")
+            raise ValidationError("Email already exists.")
 
 
 class UpdateForm (FlaskForm):
@@ -43,13 +43,3 @@ class UpdateForm (FlaskForm):
 
 
     submit = SubmitField("Update")
-
-    def check_company_name(self, company_name):
-
-        if CompanyModel.find_by_name(company_name):
-            raise ValidationError("Sorry, that company name already exists.")
-
-
-    def check_email(self, email):
-        if CompanyModel.find_by_email(email):
-            raise ValidationError("Sorry, that email already exists.")

@@ -12,7 +12,7 @@ class StaffCreateForm(FlaskForm):
     company_id = IntegerField("company ID", validators=[DataRequired()])
     submit = SubmitField("Register")
 
-    def check_username(self, field):
+    def validate_username(self, field):
         if StaffModel.find_by_name(field.data):
             raise ValidationError("your username has been registered already.")
 

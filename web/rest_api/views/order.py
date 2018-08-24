@@ -101,7 +101,8 @@ def order_check_status():
 
     if form.validate_on_submit():
         order = OrderModel.find_by_ur_code(form.order_number.data)
-        return redirect(url_for("order.order_info", order_id=order.id))
+        if order:
+            return redirect(url_for("order.order_info", order_id=order.id))
 
     return render_template("order_check_status.html", form=form)
 
