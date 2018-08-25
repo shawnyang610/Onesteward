@@ -27,3 +27,6 @@ Werkzeug==0.14.1
 WTForms==2.2.1
 psycopg2
 gunicorn==19.6.0
+qrcode==6.0
+Pillow==5.2.0
+pyzbar==0.1.7

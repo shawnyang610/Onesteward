@@ -3,6 +3,10 @@ MAINTAINER Shawn Yang <shawnyang610@gmail.com>
 
 # Create the group and user to be used in this container
 RUN groupadd flaskgroup && useradd -m -g flaskgroup -s /bin/bash flask
+RUN apt-get update
+
+# install zbar library for QR CODE decoding
+RUN apt-get --yes install libzbar-dev libzbar0
 
 # Create the working directory (and set it as the working directory)
 RUN mkdir -p /home/flask/app/web
@@ -13,6 +17,7 @@ WORKDIR /home/flask/app/web
 # re-install all python packages defined in requirements.txt
 # whenever any source code change is made)
 COPY requirements.txt /home/flask/app/web
+RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the source code into the container

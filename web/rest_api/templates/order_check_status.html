@@ -6,11 +6,22 @@
 {% from "_formhelpers.html" import render_field %}
 
 <div class="jumbotron">
-    <form action="" method="POST">
+    <form action="" method="POST" enctype="multipart/form-data">
         {{form.hidden_tag()}}
-        {{ render_field(form.order_number)}}
-        {{form.submit()}}
+
+        {% for field in form %}
+            {% if field.type == "StringField" or field.type=="FileField" %}
+                {{ render_field(field)}} <br>
+            {% elif field.type == "SubmitField" %}
+                {{form.submit()}} <br>
+            {% endif %}
+        {% endfor %}
     </form>
+    <br>
+    <br>
+    <a href="{{url_for("order.order_check_status_qrcode")}}">check by QR Code</a> | 
+    <a href="{{url_for("order.order_check_status")}}">check by Order Number)</a>
+
 </div>
 
 {% endblock %}

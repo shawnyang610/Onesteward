@@ -5,10 +5,11 @@
 
 <div class="jumbotron">
     {% from "_formhelpers.html" import render_field %}
-
+    <img src="{{url_for("static", filename="order_qr/"+form.ur_code.data + extension)}}" alt="">
+    <br>
     <form method="POST">
         {{form.hidden_tag()}}
-        {{ render_field(form.ur_code)}}
+        {{ render_field(form.ur_code)}} 
         {{ render_field(form.name)}}
         {{ render_field(form.staff_id)}}
         {{form.submit()}}

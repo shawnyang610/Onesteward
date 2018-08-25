@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, request
-from rest_api.forms.order import OrderCreateForm, OrderUpdateForm, OrderCheckStatusForm
+from rest_api.forms.order import OrderCreateForm, OrderUpdateForm, OrderCheckStatusByNumberForm, OrderCheckStatusByQRCodeForm
 from rest_api.models.order import OrderModel
 from rest_api.models.tracking import TrackingModel
 from rest_api.models.company import CompanyModel
@@ -11,6 +11,12 @@ from rest_api.controls.auth import (
     is_staff,
     is_user,
     render_error_page_unauthorized_access)
+from rest_api.controls.urcode_generator import (
+    generate_qrcode,
+    generate_order_number,
+    generate_and_validate_order_number,
+    decode_qrcode)
+
 order_bp = Blueprint("order", __name__)
 
 
@@ -30,7 +36,11 @@ def order_create():
 
         return redirect(url_for("order.order_info",order_id=order.id))
     
-    return render_template("order_create.html", form=form)
+    order_number = generate_and_validate_order_number(generate_order_number)
+    generate_qrcode(order_number)
+    form.ur_code.data = order_number
+    extension=".jpg"
+    return render_template("order_create.html", form=form, extension=extension)
 
 
 @order_bp.route("/update/<int:order_id>", methods=["GET","POST"])
@@ -97,7 +107,7 @@ def order_list():
 
 @order_bp.route("check_status", methods=["GET","POST"])
 def order_check_status():
-    form = OrderCheckStatusForm()
+    form = OrderCheckStatusByNumberForm()
 
     if form.validate_on_submit():
         order = OrderModel.find_by_ur_code(form.order_number.data)
@@ -106,3 +116,16 @@ def order_check_status():
 
     return render_template("order_check_status.html", form=form)
 
+@order_bp.route("check_status_qrcode", methods=["GET","POST"])
+def order_check_status_qrcode():
+    form = OrderCheckStatusByQRCodeForm()
+
+    if form.validate_on_submit():
+
+        decoded_data = decode_qrcode(form.qrcode_img.data)
+
+        order = OrderModel.find_by_ur_code(decoded_data)
+        if order:
+            return redirect(url_for("order.order_info", order_id=order.id))
+
+    return render_template("order_check_status.html", form=form)
