@@ -8,7 +8,9 @@
     <p>Order Info:</p>
     <a href="{{ url_for("post.post_create", order_id=order.id) }}">Post Message</a> | 
     <a href="{{ url_for("order.order_delete", order_id=order.id) }}">Delete</a> | 
-    <a href="{{ url_for("order.order_update", order_id=order.id) }}">Edit</a>
+    <a href="{{ url_for("order.order_update", order_id=order.id) }}">Edit</a> | 
+    <a href="{{ url_for("user.user_add_order", order_id=order.id) }}">Add to my account</a>
+
     <ul>
         <li>Order Number: {{order.ur_code}}</li>
         <li>Order Type: {{order.name}}</li>

@@ -38,7 +38,7 @@ class OrderCheckStatusByNumberForm(FlaskForm):
 
 
 class OrderCheckStatusByQRCodeForm(FlaskForm):
-    qrcode_img = FileField ("Upload QR Code Image", validators=[FileAllowed(["jpg","png"])])
+    qrcode_img = FileField ("Upload QR Code Image", validators=[DataRequired(),FileAllowed(["jpg","png"])])
     submit = SubmitField("Search for Order")
 
     def validate_qrcode_img(self, qrcode_img):

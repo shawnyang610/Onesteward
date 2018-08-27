@@ -31,7 +31,7 @@ def login ():
 
         if not next:
             next = url_for("web.index")
-        
+
         return redirect(next)
 
     return render_template("login.html", form=form)

@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request
 from rest_api.forms.user import UserCreateForm, UserUpdateForm
 from rest_api.models.user import UserModel
+from rest_api.models.user import OrderModel
 from werkzeug.security import generate_password_hash
 user_bp = Blueprint("user", __name__)
 from flask_login import login_required, current_user
@@ -112,3 +113,14 @@ def user_close_account():
 
     return redirect(url_for("web.index"))
 
+
+@user_bp.route("/add_order")
+@login_required
+def user_add_order():
+    order_id = request.args.get("order_id")
+    order = OrderModel.find_by_id(order_id)
+    if order:
+        order.user_id = current_user.id
+    order.save_to_db()
+
+    return redirect(url_for("order.order_list"))
