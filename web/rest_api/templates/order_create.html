@@ -3,7 +3,7 @@
 
 
 
-<div class="jumbotron">
+<div class="jumbotron text-center">
     {% from "_formhelpers.html" import render_field %}
     <img src="{{url_for("static", filename="order_qr/"+form.ur_code.data + extension)}}" alt="">
     <br>

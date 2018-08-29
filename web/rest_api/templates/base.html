@@ -12,54 +12,84 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
 </head>
-<body>
-    <div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+<body style="min-height: 75rem;">
+    <header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
             <a class="navbar-brand" href="#">OneSteward</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
-            </button>
+              </button>
+
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                <a class="nav-item nav-link" href="{{ url_for("web.index") }}">Home <span class="sr-only">(current)</span></a>
-                <a href="{{url_for("company.company_info")}}" class="nav-item nav-link right">Our Partners</a>
+                <ul class="navbar-nav mr-auto">
 
-                <a class="nav-item nav-link" href="{{ url_for("order.order_check_status") }}">Track Order</a>
-                {% if not current_user.role  %}
-                <a class="nav-item nav-link" href="{{ url_for("order.order_list") }}">Order History</a>
-                <a class="nav-item nav-link" href="{{ url_for("user.user_account", user_id = current_user.id) }}">Account</a>
-                {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for("web.index") }}">Home <span class="sr-only">(current)</span></a>
+                    </li>
 
-                {% if current_user.is_authenticated and current_user.role and current_user.role != "admin"%}
-                <a class="nav-item nav-link" href="{{url_for("staff.staff_workspace")}}">Workspace</a>
-                {% endif %}
+                    <li class="nav-item">
 
-                {% if current_user.is_authenticated and current_user.role == "admin" %}
-                <a class="nav-item nav-link" href="{{ url_for("admin.control_panel") }}">Admin Panel</a>
-                {% endif %}
+                        <a class="nav-link" href="{{url_for("company.company_info")}}" >Our Partners</a>
+                    </li>
 
-                {% if current_user.is_authenticated %}
-                <a href="#" class="nav-item nav-link right">Hi, {{ current_user.name }} </a>
-                {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for("order.order_check_status") }}">Track Order</a>
+                    </li>
 
-                {% if not current_user.is_authenticated %}
-                <!-- <a class="nav-item nav-link" href="{{ url_for("user.user_register") }}">Register</a> -->
-                <a class="nav-item nav-link" href="{{ url_for("auth.login") }}">Login</a>
-                {% endif %}
+                    {% if not current_user.role  %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for("order.order_list") }}">Order History</a>
+                    </li>
 
-                {% if current_user.is_authenticated %}
-                <a class="nav-item nav-link" href="{{ url_for("auth.logout") }}">Logout</a>
-                {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for("user.user_account", user_id = current_user.id) }}">Account</a>
+                    </li>
+                    {% endif %}
 
+                    {% if current_user.is_authenticated and current_user.role and current_user.role != "admin"%}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for("staff.staff_workspace")}}">Workspace</a>
+                    </li>
+                    {% endif %}
+
+                    {% if current_user.is_authenticated and current_user.role == "admin" %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for("admin.control_panel") }}">Admin Panel</a>
+                    </li>
+                    {% endif %}
+
+
+                </ul>
+
+                <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a href="#" class="nav-link right">Hi, {{ current_user.name }} </a>
+                    </li>
+                    {% endif %}
+
+                    {% if not current_user.is_authenticated %}
+                    <!-- <a class="nav-item nav-link" href="{{ url_for("user.user_register") }}">Register</a> -->
+                    <li class="nav-item">
+                        <a class="nav-item nav-link" href="{{ url_for("auth.login") }}">Login</a>
+                    </li>
+                    {% endif %}
+
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-item nav-link" href="{{ url_for("auth.logout") }}">Logout</a>
+                    </li>
+                    {% endif %}
+                </ul>
             </div>
-            </div>
-            </nav>
-            </div>
-    <div class="container">
-        {% block content %}
-
+        </nav>
+        </header>
+        {% block dashboard %}
         {% endblock %}
-    </div>
+
+        {% block content %}
+        {% endblock %}
     
 </body>
 </html>

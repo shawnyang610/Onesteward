@@ -5,17 +5,14 @@
 
 {% from "_formhelpers.html" import render_field %}
 
-<div class="jumbotron">
-    <form action="" method="POST" enctype="multipart/form-data">
-        {{form.hidden_tag()}}
 
+<div class="jumbotron text-center">
+    <form class="form-inline mt-2 mt-md-0" action="" method="POST" enctype="multipart/form-data">
+        <div class="mx-auto">
         {% for field in form %}
-            {% if field.type == "StringField" or field.type=="FileField" %}
-                {{ render_field(field)}} <br>
-            {% elif field.type == "SubmitField" %}
-                {{form.submit()}} <br>
-            {% endif %}
+            {{ render_field(field)}}
         {% endfor %}
+        </div>
     </form>
     <br>
     <br>

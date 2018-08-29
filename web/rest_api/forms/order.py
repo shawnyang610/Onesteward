@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, ValidationError, IntegerField
 from flask_wtf.file import FileField, FileAllowed
-from wtforms.validators import DataRequired, NumberRange
+from wtforms.validators import DataRequired, NumberRange, Length
 from rest_api.models.order import OrderModel
 from rest_api.controls.urcode_generator import decode_qrcode
 
@@ -27,7 +27,7 @@ class OrderUpdateForm (FlaskForm):
 
 
 class OrderCheckStatusByNumberForm(FlaskForm):
-    order_number = StringField("Order Number", validators=[NumberRange()])
+    order_number = StringField("Order Number", validators=[NumberRange(), Length(min=3, max=30)], description="Order Number")
     submit = SubmitField("Search for Order")
 
 
@@ -38,8 +38,8 @@ class OrderCheckStatusByNumberForm(FlaskForm):
 
 
 class OrderCheckStatusByQRCodeForm(FlaskForm):
-    qrcode_img = FileField ("Upload QR Code Image", validators=[DataRequired(),FileAllowed(["jpg","png"])])
-    submit = SubmitField("Search for Order")
+    qrcode_img = FileField ("Upload QR Code Image", validators=[DataRequired(),FileAllowed(["jpg","png"])],description="Select QR CODE Image", render_kw={"placeholder":"Select QR Code Image"})
+    submit = SubmitField("Search")
 
     def validate_qrcode_img(self, qrcode_img):
         decoded_data = decode_qrcode(qrcode_img.data)

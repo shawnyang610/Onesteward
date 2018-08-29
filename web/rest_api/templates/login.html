@@ -2,7 +2,8 @@
 {% block content %}
 
 
-<div class="jumbotron">
+
+<div class="jumbotron text-center">
         {% from "_formhelpers.html" import render_field %}
     
     
@@ -15,4 +16,5 @@
         <br>
         <p>no account yet? <a href="{{url_for("user.user_register")}}">Register a free account</a></p>
     </div>
+
 {% endblock %}
