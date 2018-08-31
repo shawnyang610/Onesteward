@@ -7,16 +7,30 @@
 {% block content %}
 
 
-<main role="main" class="container">
-<div class="jumbotron">
-    <h5>Hello,</h5>
+
+<div class="text-center mt-5">
     <br>
     <br>
-    <h6>if you are a customer of our parners, track your order <a href="{{ url_for("order.order_check_status") }}">here.</a></h6>
     <br>
-    <h6>If you have placed orders with us before, it's recomanded to <a href="{{url_for("user.user_register")}}">register</a> a free account and link all you past orders.</h6>
-    <h6>and <a href="{{ url_for("auth.login") }}">Login </a> to access all your orders!</h6>
+    <p><a href="{{url_for("user.user_register")}}">Register</a> for free account</p> 
+    <p>Login to access and manage all your past orders!</p>
+    <br>
+    {% from "_formhelpers.html" import render_field %}
+    <form class="form-inline mt-2 mt-md-0" action="" method="POST" enctype="multipart/form-data">
+        <div class="mx-auto">
+        {% for field in form %}
+            {{ render_field(field)}}
+        {% endfor %}
+        </div>
+    </form>
+    <br>
+    
+    {% if search_method=="by_order_number" %}
+    <a href="{{url_for("web.index", search_method="by_qrcode")}}">Search by QR-code image</a>
+    {% else %}   
+    <a href="{{url_for("web.index", search_method="by_order_number")}}">Search by Order Number</a>
+    {% endif %}
 </div>
-</main>
+
 
 {% endblock %}
