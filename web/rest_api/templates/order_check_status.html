@@ -5,7 +5,7 @@
 
 {% from "_formhelpers.html" import render_field %}
 
-
+<hr>
 <div class="jumbotron text-center">
     <form class="form-inline mt-2 mt-md-0" action="" method="POST" enctype="multipart/form-data">
         <div class="mx-auto">
@@ -16,8 +16,8 @@
     </form>
     <br>
     <br>
-    <a href="{{url_for("order.order_check_status_qrcode")}}">check by QR Code</a> | 
-    <a href="{{url_for("order.order_check_status")}}">check by Order Number)</a>
+    <a href="{{url_for("order.order_check_status_qrcode")}}">Check by QR Code</a>   |   
+    <a href="{{url_for("order.order_check_status")}}">Check by Order Number</a>
 
 </div>
 

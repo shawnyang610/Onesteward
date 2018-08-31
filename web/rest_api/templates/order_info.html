@@ -4,39 +4,113 @@
 
 
 <div class="jumbotron center">
-    <h3>Order ID: {{order.id}}</h3>
-    <p>Order Info:</p>
-    <a href="{{ url_for("post.post_create", order_id=order.id) }}">Post Message</a> | 
-    <a href="{{ url_for("order.order_delete", order_id=order.id) }}">Delete</a> | 
-    <a href="{{ url_for("order.order_update", order_id=order.id) }}">Edit</a> | 
-    <a href="{{ url_for("user.user_add_order", order_id=order.id) }}">Add to my account</a>
+    <h6>Order ID: {{order.id}}</h6>
+    <!-- guest: Order Number, Handling Staff, and the date and message of the updates -->
+    {% if not current_user.is_authenticated %}
+        <p>Order updates:</p>
+        <p>See order detail, please <a href="">verify</a> your identity or <a href="">Login</a>.</p>
+        <ul>
+            <li>Order Number: {{order.ur_code}}</li>
+            <!-- <li>Order Type: {{order.name}}</li> -->
+            <li>Handling Staff: {{order.staff.name}}</li>
+            <li>Company: {{order.company.name}}</li>
+            <!-- <li>Client: {{order.user.name}}</li> -->
+        </ul>
 
-    <ul>
-        <li>Order Number: {{order.ur_code}}</li>
-        <li>Order Type: {{order.name}}</li>
-        <li>Handling Staff: {{order.staff.name}}</li>
-        <!-- <li>Company: {{order.company.name}}</li> -->
-        <li>Client: {{order.user.name}}</li>
-    </ul>
+        <p>Updates:</p>
+        {% for post in posts.items %}
+    
+            <ul>
+                <!-- <li>posted by: {{post.staff.name}}</li>
+                <li>posted by: {{post.user.name}}</li> -->
+                <li>date: {{ post.date.strftime("%B %d, %Y")}}</li>
+                <li><p>{{post.message}}</p></li>
+                <!-- <li> attachments: 
+                    {% for attachment in post.attachments%}
+                        <a href="{{ url_for("static", filename="attachments/"+attachment.attachment_name, _external=True) }}">{{attachment.attachment_name}}</a> |    
+                    {% endfor %}
+                </li> -->
+            </ul>
+        {% endfor %}
+    {% endif %}
 
-    <p>Updates:</p>
-    {% for post in posts.items %}
+
+
+
+
+    <!-- user: Post Message, Add to my account -->
+
+    {% if current_user.is_authenticated and not current_user.role and current_user.id == order.user_id %}
+
+        <p>Order updates:</p>
+
+        <!-- <p>See order detail, please <a href="">verify</a> your identity or <a href="">Login</a>.</p> -->
+        <a href="{{ url_for("post.post_create", order_id=order.id) }}">Post Message</a> | 
+        <!-- <a href="{{ url_for("order.order_delete", order_id=order.id) }}">Delete</a> |  -->
+        <!-- <a href="{{ url_for("order.order_update", order_id=order.id) }}">Edit</a> |  -->
+        <a href="{{ url_for("user.user_add_order", order_id=order.id) }}">Add to my account</a>
+        
+        <ul>
+            <li>Order Number: {{order.ur_code}}</li>
+            <li>Order Type: {{order.name}}</li>
+            <li>Handling Staff: {{order.staff.name}}</li>
+            <li>Company: {{order.company.name}}</li>
+            <li>Client: {{order.user.name}}</li>
+        </ul>
+
+        <p>Updates:</p>
+        {% for post in posts.items %}
+
+            <ul>
+                <li>posted by: {{post.staff.name}}</li>
+                <li>posted by: {{post.user.name}}</li>
+                <li>date: {{ post.date.strftime("%B %d, %Y")}}</li>
+                <li><p>{{post.message}}</p></li>
+                <li> attachments: 
+                    {% for attachment in post.attachments%}
+                        <a href="{{ url_for("static", filename="attachments/"+attachment.attachment_name, _external=True) }}">{{attachment.attachment_name}}</a> |    
+                    {% endfor %}
+                </li>
+            </ul>
+        {% endfor %}
+    {% endif %}
+
+
+    <!-- staff, company_admin, admin: Post Message, Delete, Edit -->
+
+    {% if current_user.is_authenticated and current_user.role and current_user.company_id == order.company.id %}
+        
+        <p>Order updates:</p>
+
+        <a href="{{ url_for("post.post_create", order_id=order.id) }}">Post Message</a> | 
+        <a href="{{ url_for("order.order_delete", order_id=order.id) }}">Delete</a> | 
+        <a href="{{ url_for("order.order_update", order_id=order.id) }}">Edit</a> | 
+        <!-- <a href="{{ url_for("user.user_add_order", order_id=order.id) }}">Add to my account</a> -->
 
         <ul>
-            <li>posted by: {{post.staff.name}}</li>
-            <li>posted by: {{post.user.name}}</li>
-            <li>date: {{ post.date.strftime("%B %d, %Y")}}</li>
-            <li><p>{{post.message}}</p></li>
-            <li> attachments: 
-                {% for attachment in post.attachments%}
-                    <a href="{{ url_for("static", filename="attachments/"+attachment.attachment_name, _external=True) }}">{{attachment.attachment_name}}</a> |    
-                {% endfor %}
-            </li>
+            <li>Order Number: {{order.ur_code}}</li>
+            <li>Order Type: {{order.name}}</li>
+            <li>Handling Staff: {{order.staff.name}}</li>
+            <li>Company: {{order.company.name}}</li>
+            <li>Client: {{order.user.name}}</li>
         </ul>
-        <p>staff: {{order.staff.name}}</p>
-    
-    {% endfor %}
-        
+
+        <p>Updates:</p>
+        {% for post in posts.items %}
+
+            <ul>
+                <li>posted by: {{post.staff.name}}</li>
+                <li>posted by: {{post.user.name}}</li>
+                <li>date: {{ post.date.strftime("%B %d, %Y")}}</li>
+                <li><p>{{post.message}}</p></li>
+                <li> attachments: 
+                    {% for attachment in post.attachments%}
+                        <a href="{{ url_for("static", filename="attachments/"+attachment.attachment_name, _external=True) }}">{{attachment.attachment_name}}</a> |    
+                    {% endfor %}
+                </li>
+            </ul>        
+        {% endfor %}
+    {% endif %}
         
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
