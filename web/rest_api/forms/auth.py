@@ -7,8 +7,8 @@ from werkzeug.security import check_password_hash
 
 
 class AuthLogin(FlaskForm):
-    username = StringField("username", validators=[DataRequired()])
-    password = PasswordField("password", validators=[DataRequired()])
+    username = StringField("username", validators=[DataRequired()], description="Username")
+    password = PasswordField("password", validators=[DataRequired()], description="Password")
     submit = SubmitField("Login")
 
     def validate_username(self, username):

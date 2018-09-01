@@ -5,11 +5,11 @@ from rest_api.models.user import UserModel
 
 
 class UserCreateForm(FlaskForm):
-    username = StringField("username", validators=[DataRequired()])
-    email = StringField("Email", validators=[DataRequired(),Email()])
-    phone = StringField("Phone")
-    password = PasswordField("password", validators=[DataRequired(),EqualTo("pass_confirm", message="password must match!")])
-    pass_confirm =  PasswordField("confirm password", validators=[DataRequired()])
+    username = StringField("username", validators=[DataRequired()], description="Username")
+    email = StringField("Email", validators=[DataRequired(),Email()], description="Email")
+    phone = StringField("Phone", description="Phone")
+    password = PasswordField("password", validators=[DataRequired(),EqualTo("pass_confirm", message="password must match!")], description="Password")
+    pass_confirm =  PasswordField("confirm password", validators=[DataRequired()], description="Confirm Password")
     submit = SubmitField("Register")
 
     def validate_username(self, username):
@@ -21,8 +21,8 @@ class UserCreateForm(FlaskForm):
             raise ValidationError("your email has been registered.")
 
 class UserUpdateForm(FlaskForm):
-    email = StringField("Email", validators=[DataRequired(),Email()])
-    phone = StringField("Phone")
-    password = PasswordField("password", validators=[DataRequired(),EqualTo("pass_confirm", message="password must match!")])
-    pass_confirm =  PasswordField("confirm password", validators=[DataRequired()])
+    email = StringField("Email", validators=[DataRequired(),Email()], description="Email")
+    phone = StringField("Phone", description="Phone")
+    password = PasswordField("password", validators=[DataRequired(),EqualTo("pass_confirm", message="password must match!")], description="Password")
+    pass_confirm =  PasswordField("confirm password", validators=[DataRequired()], description="Confirm Password")
     submit = SubmitField("Update")

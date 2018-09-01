@@ -8,11 +8,11 @@ from flask import current_app
 
 class PostCreateForm(FlaskForm):
 
-    message = StringField("Message", validators=[DataRequired()])
+    message = StringField("Message", validators=[DataRequired()], description="Message")
     # order_id = IntegerField("Order ID", validators=[DataRequired(), NumberRange()])
-    staff_id = IntegerField("Staff ID", validators=[DataRequired(), NumberRange()])
-    user_id = IntegerField("User ID", validators=[DataRequired(), NumberRange()])
-    attachment = FileField("Add Attachment", validators=[FileAllowed(["jpg","pdf","png"])])
+    staff_id = IntegerField("Staff ID", validators=[DataRequired(), NumberRange()], description="Staff ID")
+    user_id = IntegerField("User ID", validators=[DataRequired(), NumberRange()], description="User ID")
+    attachment = FileField("Add Attachment", validators=[FileAllowed(["jpg","pdf","png"])], description="Attachment")
     submit = SubmitField("Post")
 
 class PostUpdateForm(FlaskForm):

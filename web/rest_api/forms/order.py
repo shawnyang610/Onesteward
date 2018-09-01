@@ -7,9 +7,9 @@ from rest_api.controls.urcode_generator import decode_qrcode
 
 class OrderCreateForm (FlaskForm):
 
-    ur_code = StringField("Order Number", validators=[DataRequired()] )
-    name = StringField("Service Type", validators=[DataRequired()])
-    staff_id = IntegerField("Staff ID", validators=[DataRequired(), NumberRange()])
+    ur_code = StringField("Order Number", validators=[DataRequired()], description="Order Number")
+    name = StringField("Service Type", validators=[DataRequired()], description="Service Type")
+    staff_id = IntegerField("Staff ID", validators=[DataRequired(), NumberRange()], description="Staff ID")
     submit = SubmitField("Save Order")
 
     def check_ur_code(self, ur_code):
@@ -21,8 +21,8 @@ class OrderCreateForm (FlaskForm):
 
 class OrderUpdateForm (FlaskForm):
 
-    name = StringField("Service Type", validators=[DataRequired()])
-    staff_id = IntegerField("Staff ID", validators=[DataRequired()])
+    name = StringField("Service Type", validators=[DataRequired()], description="Service Type")
+    staff_id = IntegerField("Staff ID", validators=[DataRequired()], description="Staff ID")
     submit = SubmitField("Update Order")
 
 

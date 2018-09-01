@@ -8,25 +8,11 @@
 <div class="jumbotron text-center">
     <form method = "POST">
 
-        {{ form.hidden_tag() }}
-
-        {{render_field(form.company_name)}}
-
-        {{render_field(form.email)}}
-
-        {{render_field(form.phone)}}
-
-        {{render_field(form.line1)}}
-
-        {{render_field(form.line2)}}
-
-        {{render_field(form.city)}}
-
-        {{render_field(form.state)}}
-
-        {{render_field(form.zip)}}
-
-        {{ form.submit() }}
+        <div class="mx-auto">
+            {% for field in form %}
+                {{ render_field(field)}}
+            {% endfor %}
+            </div>
     </form>
 </div>
 
