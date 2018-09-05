@@ -21,7 +21,7 @@
                 <span class="navbar-toggler-icon"></span>
               </button>
 
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav mr-auto">
 
                     <li class="nav-item">
@@ -31,10 +31,6 @@
                     <li class="nav-item">
 
                         <a class="nav-link" href="{{url_for("company.company_info")}}" >Our Partners</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for("order.order_check_status") }}">Track Order</a>
                     </li>
 
                     {% if not current_user.role  %}

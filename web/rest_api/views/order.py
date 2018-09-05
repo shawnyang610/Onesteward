@@ -21,7 +21,11 @@ order_bp = Blueprint("order", __name__)
 
 
 @order_bp.route("/create", methods=["GET","POST"])
+@login_required
 def order_create():
+
+    if is_user(current_user):
+        return render_error_page_unauthorized_access()
 
     form = OrderCreateForm()
 
@@ -39,6 +43,7 @@ def order_create():
     order_number = generate_and_validate_order_number(generate_order_number)
     generate_qrcode(order_number)
     form.ur_code.data = order_number
+    form.staff_id.data=current_user.id
     extension=".jpg"
     return render_template("order_create.html", form=form, extension=extension)
 

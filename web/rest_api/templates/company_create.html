@@ -5,8 +5,10 @@
 
 {% from "_formhelpers.html" import render_field %}
 
-<div class="jumbotron text-center">
-    <form method = "POST">
+<div class="container text-center mt-5" style="width:400px">
+    <p>Register new company</p> <br>
+
+    <form class="mt-2 mt-md-0" method = "POST">
 
         <div class="mx-auto">
             {% for field in form %}

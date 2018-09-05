@@ -3,13 +3,14 @@
 
 
 
-<div class="jumbotron">
+<div class="container">
+
+    <p>Our Partners</p> <br>
 
     {% for company in companies.items %}
 
         <h3>{{company.name}} </h3>
-        <br>
-        <h6>contacts:</h6>
+        <p>contacts:</p>
         <p>Tel: {{company.phone}}</p>
         <p>Email: {{company.email}}</p>
         <a href="{{ url_for("company.company_close_account", company_id=company.id) }}">Delete</a> | 
