@@ -6,8 +6,7 @@ services:
     build: ./web
     expose:
       - "8000"
-    volumes:
-      - /usr/src/app/web/rest_api/static
+
     command: /usr/local/bin/gunicorn -w 2 -b :8000 rest_api:app
     depends_on:
       - postgres

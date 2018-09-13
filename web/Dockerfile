@@ -26,3 +26,5 @@ COPY . /home/flask/app/web
 RUN chown -R flask:flaskgroup /home/flask
 
 USER flask
+
+VOLUME /home/flask/app/web/rest_api/static
