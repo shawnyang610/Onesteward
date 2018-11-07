@@ -13,9 +13,11 @@
         <p>contacts:</p>
         <p>Tel: {{company.phone}}</p>
         <p>Email: {{company.email}}</p>
+        {% if current_user.is_authenticated and current_user.role and current_user.role == "admin" %}
         <a href="{{ url_for("company.company_close_account", company_id=company.id) }}">Delete</a> | 
         <a href="{{ url_for("company.company_update", company_id=company.id) }}">Edit</a> | 
         <a href="{{ url_for("address.address_create", company_id=company.id, user_id=1) }}">Add Location</a>
+        {% endif %}
         <br>
         <br>
         <h6>locations:</h6>
@@ -23,8 +25,10 @@
             <p>
                 {{address.json()}}
             </p>
+            {% if current_user.is_authenticated and current_user.role and current_user.role == "admin" %}
             <a href="{{ url_for("address.address_update", address_id=address.id) }}">Edit</a> | 
             <a href="{{ url_for("address.address_delete", address_id=address.id) }}">Delete</a>
+            {% endif %}
             <br>
             <br>
 

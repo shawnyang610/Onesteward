@@ -31,6 +31,10 @@ def login ():
 
         if not next:
             next = url_for("web.index")
+        
+        # solve admin login redirect to account bug
+        if staff and staff.role == 'admin':
+            next = url_for("web.index")
 
         return redirect(next)
 
